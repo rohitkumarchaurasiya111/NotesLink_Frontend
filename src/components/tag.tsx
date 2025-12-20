@@ -1,4 +1,4 @@
-import { clsxMerge } from '../utils';
+import { clsxMerge } from '../../react-components-main/utils';
 import { type HTMLAttributes, type ReactNode } from 'react';
 import { cva } from 'class-variance-authority';
 
