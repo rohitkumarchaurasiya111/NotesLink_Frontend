@@ -18,3 +18,8 @@ export async function getSpecificSubjectDetails(subjectId){
     const response = await userAPI.get(`/subjects/${subjectId}`);
     return response;
 }
+
+export async function getAllMaterialsForGivenSubject(subjectId) {
+    const response = await userAPI.get(`/subjects/${subjectId}/materials`);
+    return response;
+}

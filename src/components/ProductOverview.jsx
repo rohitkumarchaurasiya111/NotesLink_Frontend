@@ -7,7 +7,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function ProductOverview({ specificProduct }) {
+export default function ProductOverview({ specificProduct, materials }) {
   return (
     <div className="bg-white">
       <div className="pt-6">
@@ -19,7 +19,7 @@ export default function ProductOverview({ specificProduct }) {
           >
             {/* College */}
             <li className="flex items-center font-medium text-gray-900">
-              {specificProduct.college_id}
+              {specificProduct.college_name}
               <span className="mx-2 text-gray-300">/</span>
             </li>
 
@@ -72,7 +72,7 @@ export default function ProductOverview({ specificProduct }) {
         </div>
 
         {/* Different Notes will be here in the form of List */}
-        <MaterialsList />
+        <MaterialsList materials={materials}/>
       </div>
 
     </div>
