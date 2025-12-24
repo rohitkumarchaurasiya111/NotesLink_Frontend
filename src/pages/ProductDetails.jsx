@@ -1,13 +1,16 @@
 import { useState, useEffect } from "react";
 import ProductOverview from "../components/ProductOverview"
 import { getSpecificSubjectDetails, getAllMaterialsForGivenSubject } from "../api/userApi";
+import { useParams } from "react-router-dom";
 
 
 export default function ProductDetails(){
     //This will be used to store only one specific product details from backend whose details we are going to show
     const [specificProduct, setSpecificProduct] = useState("");
     const [materials, setMaterials] = useState({});
-    const subjectId = 2;
+
+    const {id} = useParams();           //Getting this Id from React Router
+    const subjectId = id;
 
     useEffect(()=>{
         async function getSubjectDetailsAndMaterials(){

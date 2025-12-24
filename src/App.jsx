@@ -5,12 +5,13 @@ import ProductListing from './pages/ProductListing'
 import ProductDetails from './pages/ProductDetails'
 import ProductOverview from './components/ProductOverview'
 import Navbar from './components/navbar'
+import { RouterProvider } from 'react-router-dom'
+import { router } from './routes'
 
 function App() {
   return (
     <>
-      <Navbar />
-      <ProductListing />
+     <RouterProvider router={router} />
     </>
   )
 }

@@ -1,6 +1,8 @@
+import { NavLink } from "react-router-dom";
+
 export default function ProductCard({ product }) {
   return (
-    <a key={product.id} href="" className="group">
+    <NavLink key={product.id} to={`/products/${product.id}`} className="group">
       <img
         alt={product.name}
         src={product.imageURL}
@@ -8,7 +10,7 @@ export default function ProductCard({ product }) {
       />
       <h3 className=" mt-1 text-lg font-medium text-gray-900">{product.name}</h3>
       <p className="mt-4 text-sm text-gray-700">{product.branch}</p>
-    </a>
+    </NavLink>
 
   )
 }
