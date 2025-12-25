@@ -1,6 +1,7 @@
 import { CircleArrowRightIcon } from '../icons/circle-arrow-right-icon';
 import Button from './button'
 import Badge from './badge'
+import { Link, NavLink } from 'react-router-dom';
 
 function ActionButtons() {
     return (
@@ -8,9 +9,11 @@ function ActionButtons() {
             <Button size="large">
                 Explore
             </Button>
-            <Button size="large" variant="text" endAdornment={<CircleArrowRightIcon className="size-6 stroke-inherit" />}>
-                See More
-            </Button>
+            <NavLink to={`/subjects`}>
+                <Button size="large" variant="text" endAdornment={<CircleArrowRightIcon className="size-6 stroke-inherit" />}>
+                    See More
+                </Button>
+            </NavLink>
         </div>
     );
 };

@@ -7,6 +7,7 @@ import { SearchIcon } from '../icons/search-icon';
 import NotesLinkFullLogo from '../assets/NotesLinkFullLogo.png';
 
 import { Years } from '../constants/Years';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 function LogoText() {
   return (
@@ -18,8 +19,19 @@ function LogoText() {
   );
 }
 
-export default function OtherNavbar({ year, setYear }) {
+export default function OtherNavbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const navigate = useNavigate();           //To navigate from one URL to other based on year changes
+  const [searchParams] = useSearchParams();
+
+  //Year comes from URL, if not present it will be set to FIRST year
+  const year = searchParams.get("year") || Years[0];
+
+  const handleYearChange = (newYear) => {
+    navigate(`/subjects?year=${newYear}`);
+    setIsMenuOpen(false); // close mobile menu on change
+  }
 
   return (
     <>
@@ -51,7 +63,7 @@ export default function OtherNavbar({ year, setYear }) {
           {/* Years Dropdown (Desktop) */}
           <select
             value={year}
-            onChange={(e) => setYear(e.target.value)}
+            onChange={(e) => handleYearChange(e.target.value)}
             className="w-40 rounded-md border border-gray-300 px-2 py-1.5 text-sm shadow-sm
                        focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
           >
@@ -88,7 +100,7 @@ export default function OtherNavbar({ year, setYear }) {
             {/* Years Dropdown (Mobile) */}
             <select
               value={year}
-              onChange={(e) => setYear(e.target.value)}
+              onChange={(e) => handleYearChange(e.target.value)}
               className="mt-2 w-full rounded-md border border-gray-300 px-2 py-1.5 text-sm"
             >
               {Years.map((yr) => (

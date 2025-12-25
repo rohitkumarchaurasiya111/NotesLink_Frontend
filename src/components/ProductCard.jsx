@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 
 export default function ProductCard({ product }) {
   return (
-    <NavLink key={product.id} to={`/products/${product.id}`} className="group">
+    <NavLink key={product.id} to={`/subject/${product.id}/${product.name}`} className="group">
       <img
         alt={product.name}
         src={product.imageURL}
