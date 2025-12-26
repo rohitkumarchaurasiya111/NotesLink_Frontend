@@ -1,5 +1,5 @@
 import Highlights from './Highlights'
-import ListCard from './ListCard'
+import ListCard from './MaterialCard'
 import MaterialsList from './MaterialsList'
 import Quote from './quote'
 

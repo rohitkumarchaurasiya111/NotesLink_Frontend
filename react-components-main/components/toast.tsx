@@ -1,6 +1,6 @@
 import { cva } from 'class-variance-authority';
 import { createContext, type HTMLAttributes, type ReactNode, useEffect, useState } from 'react';
-import { CloseIcon } from '../assets/close-icon';
+import { CloseIcon } from '../../src/components/close-icon';
 import { clsxMerge } from '../utils';
 import { Button } from './button';
 

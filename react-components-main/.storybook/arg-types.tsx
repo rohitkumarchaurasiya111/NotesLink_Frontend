@@ -5,7 +5,7 @@ import { CheckIcon } from '../assets/check-icon';
 import { CheckboxIcon } from '../assets/checkbox-icon';
 import { CircleCloseIcon } from '../assets/circle-close-icon';
 import { CircleExclamationMarkIcon } from '../assets/circle-exclamation-mark-icon';
-import { CloseIcon } from '../assets/close-icon';
+import { CloseIcon } from '../../src/components/close-icon';
 import { StarIcon } from '../assets/star-icon';
 import { UserIcon } from '../assets/user-icon';
 

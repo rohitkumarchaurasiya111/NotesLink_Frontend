@@ -13,7 +13,7 @@ import React, {
   useLayoutEffect,
 } from 'react';
 import { ChevronDownIcon } from '../../assets/chevron-down-icon';
-import { CloseIcon } from '../../assets/close-icon';
+import { CloseIcon } from '../../../src/components/close-icon';
 import { clsxMerge, handleKeyboardEvent, joinClassNames } from '../../utils';
 import { Label } from '../label';
 import { Portal } from '../portal';

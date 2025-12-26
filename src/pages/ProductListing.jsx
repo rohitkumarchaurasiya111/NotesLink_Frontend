@@ -5,8 +5,6 @@ import OtherNavbar from "../components/OtherNavbar";
 import { Years } from "../constants/Years";
 import { useLoaderData, useNavigation, useParams } from "react-router-dom";
 
-let college = 1;
-
 export default function ProductListing() {
     const navigation = useNavigation();       //Using this to show the loading state, if (navigation.state == "loading")
     const {products, year} = useLoaderData();       //Getting the Details of Product and the Year from Loader of React-router
@@ -49,6 +47,7 @@ export default function ProductListing() {
 
                             <p className="mt-2 max-w-md text-sm text-gray-500">
                                 We’re currently adding subjects for this year.
+                                <br />
                                 Please check back soon!
                             </p>
                         </div>

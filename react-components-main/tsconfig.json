@@ -15,6 +15,6 @@
     "baseUrl": ".",
     "moduleResolution": "node"
   },
-  "include": ["**/*.ts", "**/*.tsx"],
+  "include": ["**/*.ts", "**/*.tsx", "../src/components/close-icon.tsx", "assets/circle-close-icon.tsx"],
   "exclude": ["node_modules"]
 }
