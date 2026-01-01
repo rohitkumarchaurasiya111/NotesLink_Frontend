@@ -10,8 +10,6 @@ export const productListingLoader = async ({ request }) => {
     const college = 1;              //harcoding it just for now
 
     const response = await getSubjectListOfSpecificCollegeAndYear(college, year);
-
-    console.log(response.data);
     return { products: response.data, year }
 }
 

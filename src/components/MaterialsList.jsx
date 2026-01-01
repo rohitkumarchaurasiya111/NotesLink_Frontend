@@ -3,10 +3,11 @@ import { MATERIAL_TYPE } from '../constants/MATERIAL_TYPE';
 import { MATERIAL_TYPE_LABEL } from '../constants/materialTypeLabel';
 import ListCard from './MaterialCard';
 
-export default function MaterialsList({ materials }) {
+export default function MaterialsList({ materials, editMode=false, onSelectMaterial }) {
 
     // If Materials are not present, Show Building in Progress
     if (!materials || Object.keys(materials).length === 0) {
+        if (editMode) return <h2>No Materials Available, Add Some Materials For this Subject</h2>;
         return (
             <div className="flex flex-col items-center justify-center py-24 text-center">
                 <div className="rounded-full bg-blue-50 p-6">
@@ -44,7 +45,7 @@ export default function MaterialsList({ materials }) {
             {/* Itterating Over the Material Type to Display all the Type of Materials that we have */}
             {Object.entries(MATERIAL_TYPE).map(([key, value]) => {
                 if (!materials[value]) return null;         //if specific material type not present, show null
-                
+
                 //if materials of specific type is present,
                 // JSX must be returned explicitly, So return is written
                 return (
@@ -55,7 +56,7 @@ export default function MaterialsList({ materials }) {
                         <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                             {/* Iterating over the materials of specific type, and displaying them in card format */}
                             {materials[value].map((item) => (
-                                <ListCard item={item} />
+                                <ListCard key={item.id} item={item} editMode={editMode} onSelectMaterial={onSelectMaterial}/>
                             ))}
                         </div>
                     </div>

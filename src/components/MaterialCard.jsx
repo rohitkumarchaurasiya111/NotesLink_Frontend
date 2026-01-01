@@ -1,19 +1,18 @@
 import { useState } from "react";
 import axios from "axios";
 import { StarIcon } from "../icons/star-icon";
-import MaterialViewerModal from "./MaterialViewerModal";
+import { CustomFullScreenModal } from "./CustomFullScreenModal";
 
 // Displays the Material in card format
-export default function ListCard({ item }) {
+export default function ListCard({ item, editMode, onSelectMaterial }) {
   const [open, setOpen] = useState(false);
   const [previewUrl, setPreviewUrl] = useState("");
 
   const openMaterial = () => {
-    setPreviewUrl(item.driveLink); 
+    setPreviewUrl(item.driveLink);
     setOpen(true);
   };
 
-  console.log(item);
   return (
     <>
       <div
@@ -28,6 +27,15 @@ export default function ListCard({ item }) {
           />
         )}
 
+        {/* Show Display Order, Only in the case of Edit Mode */}
+        {
+          editMode && (
+            <span className="font-mono text-[11px] text-gray-700">
+              Display Order: {item.displayOrder}
+            </span>
+          )
+        }
+
         {/* Card Content */}
         <h2 className="text-base font-semibold text-gray-900 line-clamp-2">
           {item.title}
@@ -38,7 +46,6 @@ export default function ListCard({ item }) {
         </p>
 
         <div className="mt-4 flex items-center justify-between">
-          {console.log(item)}
           <button
             onClick={() => openMaterial()}
             className="text-sm font-medium text-blue-600 hover:underline"
@@ -51,15 +58,26 @@ export default function ListCard({ item }) {
               Premium
             </span>
           )}
+
+          {editMode && (
+            <button
+              onClick={() => onSelectMaterial(item)}
+              className="text-sm font-medium text-red-600 hover:underline"
+            >
+              Edit
+            </button>
+          )}
         </div>
       </div>
 
       {/* Modal - which opens this specific material using it's PreviewURL */}
-      <MaterialViewerModal
+      <CustomFullScreenModal
         isOpen={open}
         onClose={() => setOpen(false)}
-        previewUrl={previewUrl}
-      />
+        iframeSrc={previewUrl}
+      >
+        <h1>Error: Contact Admin</h1>
+      </CustomFullScreenModal>
 
     </>
   );

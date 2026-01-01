@@ -23,3 +23,8 @@ export async function getAllMaterialsForGivenSubject(subjectId) {
     const response = await userAPI.get(`/subjects/${subjectId}/materials`);
     return response;
 }
+
+export async function getAllCollegeDetails(){
+    const response = await userAPI.get(`/colleges`);
+    return response;
+}
