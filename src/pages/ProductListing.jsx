@@ -1,9 +1,7 @@
-import { useEffect, useState } from "react";
 import ProductCard from "../components/productCard";
-import { getSubjectListOfSpecificCollegeAndYear } from "../api/userApi";
 import OtherNavbar from "../components/OtherNavbar";
-import { Years } from "../constants/Years";
 import { useLoaderData, useNavigation, useParams } from "react-router-dom";
+import Loader from "../components/Loader";
 
 export default function ProductListing() {
     const navigation = useNavigation();       //Using this to show the loading state, if (navigation.state == "loading")
@@ -17,9 +15,7 @@ export default function ProductListing() {
                 <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
                     {/* Loading State */}
                     {(navigation.state == "loading") && (
-                        <div className="flex justify-center py-24">
-                            <p className="text-sm text-gray-500">Loading subjects...</p>
-                        </div>
+                        <Loader message={"Loading Subjects..."}/>
                     )}
 
                     {/* Empty State */}
