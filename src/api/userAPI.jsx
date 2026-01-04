@@ -28,3 +28,13 @@ export async function getAllCollegeDetails(){
     const response = await userAPI.get(`/colleges`);
     return response;
 }
+
+export async function getAllBookDetails() {
+    const response = await userAPI.get('/books');
+    return response;
+}
+
+export async function getAllProjectDetails() {
+    const response = await userAPI.get('/projects')
+    return response;
+}

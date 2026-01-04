@@ -1,5 +1,6 @@
 export const BookCategory = [
     "ENGINEERING",
+    "PROGRAMMING",
     "COMPUTER_SCIENCE",
     "MATHEMATICS",
     "MANAGEMENT",

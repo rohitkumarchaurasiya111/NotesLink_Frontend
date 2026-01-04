@@ -4,12 +4,14 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ProductListing from "../pages/ProductListing";
 import ProductDetails from "../pages/ProductDetails";
 import Home from "../pages/Home";
-import { productDetailsLoader, productListingLoader } from "./loaders";
+import { bookListingLoader, productDetailsLoader, productListingLoader, projectListingLoader } from "./loaders";
 import UserLayout from "../layouts/UserLayout";
 import AdminLayout from "../layouts/AdminLayout";
 import AdminDashboard from "../pages/admin/AdminDashboard";
 import AdminSubjectsPage from "../pages/admin/AdminSubjectsPage";
 import AdminMaterialsPage from "../pages/admin/AdminMaterialsPage";
+import BookListing from "../pages/BookListing";
+import ProjectListing from "../pages/ProjectListing";
 
 export const router = createBrowserRouter([
     /* =======================
@@ -33,6 +35,16 @@ export const router = createBrowserRouter([
                 element: <ProductDetails />,
                 loader: productDetailsLoader,
             },
+            {
+                path: "books",
+                element: <BookListing />,
+                loader: bookListingLoader,
+            },
+            {
+                path: "projects",
+                element: <ProjectListing />,
+                loader: projectListingLoader,
+            }
         ],
     },
 

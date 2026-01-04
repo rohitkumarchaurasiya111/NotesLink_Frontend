@@ -1,6 +1,6 @@
 // All the code blocks where we are fetching some data using API and giving those data to components, will be here and we will only pass the data to components using react-routers.
 
-import { getAllMaterialsForGivenSubject, getSpecificSubjectDetails, getSubjectListOfSpecificCollegeAndYear } from "../api/userApi";
+import { getAllBookDetails, getAllMaterialsForGivenSubject, getAllProjectDetails, getSpecificSubjectDetails, getSubjectListOfSpecificCollegeAndYear } from "../api/userApi";
 import { Years } from "../constants/Years";
 
 // This will fetch the subejcts of Specific Year and college
@@ -21,4 +21,16 @@ export const productDetailsLoader = async ({ params }) => {
     let materialRes = await getAllMaterialsForGivenSubject(id);
 
     return {specificProduct: subjectRes.data, materials: materialRes.data};
+}
+
+//This will fetch all the book details
+export const bookListingLoader = async () => {
+    let bookRes = await getAllBookDetails();
+    return {books: bookRes.data};
+}
+
+//This will fetch all the project details
+export const projectListingLoader = async () => {
+    let projectRes = await getAllProjectDetails();
+    return {projects: projectRes.data};
 }
