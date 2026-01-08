@@ -1,11 +1,11 @@
 import { getAllCollegeDetails } from "../../api/userApi";
 import AlertMessage from "../../components/AlertMessage";
-import SubjectFilterBar from "../../components/SubjectFilterBar";
-import SubjectForm from "../../components/SubjectForm";
-import SubjectList from "../../components/SubjectList";
 import { useEffect, useState, useMemo } from "react";
 import { Years } from "../../constants/Years";
 import { Branches } from "../../constants/Branches";
+import AdminSubjectForm from "../../components/AdminSubjectForm";
+import AdminSubjectFilterBar from "../../components/AdminSubjectFilterBar";
+import AdminSubjectList from "../../components/AdminSubjectList";
 
 export default function AdminSubjectsPage() {
     const [collegeId, setCollegeId] = useState("");           // Selected CollegeId in Dropdown
@@ -44,14 +44,14 @@ export default function AdminSubjectsPage() {
 
                 {/* Header Section */}
                 <div className="mb-8">
-                    <h1 className="text-3xl font-bold tracking-tight text-gray-900">Manage Subjects</h1>
+                    <h1 className="text-3xl font-bold tracking-tight text-gray-900">Subject Management</h1>
                     <p className="mt-2 text-sm text-gray-500">
                         Configure the curriculum by selecting a college and year below.
                     </p>
                 </div>
 
                 {/* Filters to select College and Year */}
-                <SubjectFilterBar
+                <AdminSubjectFilterBar
                     colleges={colleges}
                     years={Years}
                     collegeId={collegeId}
@@ -74,7 +74,7 @@ export default function AdminSubjectsPage() {
                 <div className="space-y-10">
                     {/* Subject Form */}
                     <section>
-                        <SubjectForm
+                        <AdminSubjectForm
                             enabled={isReady}
                             selectedSubject={selectedSubject}
                             onSuccess={() => {
@@ -93,7 +93,7 @@ export default function AdminSubjectsPage() {
                     {/* Subject List - Only render if filters are selected to keep UI clean */}
                     {isReady && (
                         <section className="border-t border-gray-200 pt-10">
-                            <SubjectList
+                            <AdminSubjectList
                                 enabled={isReady}
                                 collegeId={collegeId}
                                 year={year}

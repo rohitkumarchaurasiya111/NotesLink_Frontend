@@ -1,14 +1,14 @@
 import { getAllCollegeDetails, getAllMaterialsForGivenSubject } from "../../api/userApi";
 import { CustomFullScreenModal } from "../../components/CustomFullScreenModal";
-import MaterialsList from "../../components/MaterialsList";
-import SubjectCard from "../../components/SubjectCard";
-import SubjectFilterBar from "../../components/SubjectFilterBar";
-import SubjectList from "../../components/SubjectList";
 import { Years } from "../../constants/Years";
-import CreateMaterialForm from "../../components/MaterialForm";
 import { useState, useEffect, useCallback } from "react";
 import Loader from "../../components/Loader";
 import AlertMessage from "../../components/AlertMessage";
+import AdminSubjectFilterBar from "../../components/AdminSubjectFilterBar";
+import AdminSubjectList from "../../components/AdminSubjectList";
+import AdminSubjectCard from "../../components/AdminSubjectCard";
+import AdminCreateMaterialForm from "../../components/AdminMaterialForm"
+import MaterialsList from "../../components/MaterialsList";
 
 
 export default function AdminMaterialsPage() {
@@ -73,7 +73,7 @@ export default function AdminMaterialsPage() {
                 </div>
 
                 {/* Filter Section */}
-                <SubjectFilterBar
+                <AdminSubjectFilterBar
                     colleges={colleges}
                     years={Years}
                     collegeId={collegeId}
@@ -89,7 +89,7 @@ export default function AdminMaterialsPage() {
                             <h2 className="text-lg font-semibold text-gray-800">Select a Subject</h2>
                         </div>
 
-                        <SubjectList
+                        <AdminSubjectList
                             enabled={isReady}
                             collegeId={collegeId}
                             year={year}
@@ -125,7 +125,7 @@ export default function AdminMaterialsPage() {
 
                             {/* Modal Header Card */}
                             <div className="p-6 border-b border-gray-100">
-                                <SubjectCard subject={selectedSubject} />
+                                <AdminSubjectCard subject={selectedSubject} />
                             </div>
 
                             {/* Alert Area */}
@@ -142,7 +142,7 @@ export default function AdminMaterialsPage() {
                             {/* Main Content Grid */}
                             <div className="grid grid-cols-1 lg:grid-cols-1 gap-8">
                                 {/* Form Section */}
-                                <CreateMaterialForm
+                                <AdminCreateMaterialForm
                                     subjectId={selectedSubject.id}
                                     setAlert={setAlert}
                                     selectedMaterial={selectedMaterial}

@@ -1,4 +1,4 @@
-export default function SubjectCard({ subject, onEdit }) {
+export default function AdminSubjectCard({ subject, onEdit }) {
   return (
     <div className="group relative flex w-full items-start gap-4 rounded-2xl border border-gray-100 bg-white p-3 shadow-sm transition-all duration-300 hover:border-blue-200 hover:shadow-lg hover:shadow-blue-500/5">
 

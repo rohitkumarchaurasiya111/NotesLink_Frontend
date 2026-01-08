@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { createMaterial, updateMaterial } from "../api/adminAPI";
 import Loader from "./Loader";
 
-export default function CreateMaterialForm({
+export default function AdminCreateMaterialForm({
     subjectId,
     setAlert,
     selectedMaterial,

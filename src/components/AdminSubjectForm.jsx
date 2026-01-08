@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { createSubject } from "../api/adminAPI";
 
-export default function SubjectForm({
+export default function AdminSubjectForm({
   enabled,
   selectedSubject,
   onSuccess,
@@ -222,7 +222,7 @@ export default function SubjectForm({
             </div>
 
             {/* Project Toggle */}
-            <label
+            {/* <label
               className={`flex cursor-pointer gap-4 rounded-xl border p-5 transition-all duration-200
               ${form.isProject
                   ? "border-blue-500 bg-blue-50 ring-1 ring-blue-500"
@@ -247,7 +247,7 @@ export default function SubjectForm({
                   Enable this if the subject involves a major semester project.
                 </p>
               </div>
-            </label>
+            </label> */}
 
             {/* Actions */}
             <div className="flex flex-col-reverse gap-4 border-t pt-8 sm:flex-row sm:justify-end">

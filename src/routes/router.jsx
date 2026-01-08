@@ -12,6 +12,8 @@ import AdminSubjectsPage from "../pages/admin/AdminSubjectsPage";
 import AdminMaterialsPage from "../pages/admin/AdminMaterialsPage";
 import BookListing from "../pages/BookListing";
 import ProjectListing from "../pages/ProjectListing";
+import AdminProjectsPage from "../pages/admin/AdminProjectsPage";
+import AdminBooksPage from "../pages/admin/AdminBooksPage";
 
 export const router = createBrowserRouter([
     /* =======================
@@ -67,6 +69,14 @@ export const router = createBrowserRouter([
                 path: "materials",
                 element: <AdminMaterialsPage />,
             },
+            {
+                path: "projects",
+                element: <AdminProjectsPage />,
+            },
+            {
+                path: "books",
+                element: <AdminBooksPage />,
+            }
         ],
     },
 ]);

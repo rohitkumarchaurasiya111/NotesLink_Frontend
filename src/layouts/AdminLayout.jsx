@@ -1,11 +1,12 @@
 import { Outlet } from "react-router-dom";
-import Sidebar from "./Sidebar";
+import AdminSidebar from "../pages/admin/AdminSidebar";
+
 
 export default function AdminLayout() {
   return (
     <div className="flex h-screen overflow-hidden bg-gray-50">
       {/* Sidebar */}
-      <Sidebar />
+      <AdminSidebar />
 
       {/* Main Content Wrapper */}
       <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">

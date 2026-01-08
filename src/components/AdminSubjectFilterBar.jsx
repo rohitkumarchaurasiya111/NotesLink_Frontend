@@ -15,7 +15,7 @@ function ChevronIcon() {
     );
 }
 
-export default function SubjectFilterBar({
+export default function AdminSubjectFilterBar({
     colleges,
     years,
     collegeId,
