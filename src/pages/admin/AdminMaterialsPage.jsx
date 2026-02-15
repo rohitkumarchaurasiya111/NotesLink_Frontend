@@ -128,17 +128,6 @@ export default function AdminMaterialsPage() {
                                 <AdminSubjectCard subject={selectedSubject} />
                             </div>
 
-                            {/* Alert Area */}
-                            {alert && (
-                                <div className="rounded-lg overflow-hidden shadow-sm">
-                                    <AlertMessage
-                                        type={alert.type}
-                                        message={alert.message}
-                                        onClose={() => setAlert(null)}
-                                    />
-                                </div>
-                            )}
-
                             {/* Main Content Grid */}
                             <div className="grid grid-cols-1 lg:grid-cols-1 gap-8">
                                 {/* Form Section */}
@@ -149,6 +138,16 @@ export default function AdminMaterialsPage() {
                                     setSelectedMaterial={setSelectedMaterial}
                                     onMaterialSave={fetchMaterials}
                                 />
+                                {/* Alert Area */}
+                                {alert && (
+                                    <div className="rounded-lg overflow-hidden">
+                                        <AlertMessage
+                                            type={alert.type}
+                                            message={alert.message}
+                                            onClose={() => setAlert(null)}
+                                        />
+                                    </div>
+                                )}
                                 {/* Existing Materials List Section */}
                                 <div className="space-y-4">
                                     <div className="flex items-center justify-between">

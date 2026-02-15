@@ -24,7 +24,7 @@ export default function AdminBookForm({
     authorName: "",
     imageURL: "",
     description: "",
-    bookCategory: "B_TECH", // Default fallback
+    bookCategory: "ENGINEERING", // Default fallback
     displayOrder: "",
     isActive: true,
   });
@@ -41,7 +41,7 @@ export default function AdminBookForm({
         authorName: selectedBook.authorName || "",
         imageURL: selectedBook.imageURL || "",
         description: selectedBook.description || "",
-        bookCategory: selectedBook.bookCategory || "B_TECH",
+        bookCategory: selectedBook.bookCategory || "ENGINEERING",
         displayOrder: selectedBook.displayOrder ?? "",
         isActive: selectedBook.isActive ?? true,
         driveLink: selectedBook.driveLink || "",
@@ -71,7 +71,7 @@ export default function AdminBookForm({
       authorName: "",
       imageURL: "",
       description: "",
-      bookCategory: "B_TECH",
+      bookCategory: "ENGINEERING",
       displayOrder: "",
       isActive: true,
     });
@@ -128,11 +128,11 @@ export default function AdminBookForm({
   return (
     <div className="relative w-full rounded-2xl bg-white shadow-sm border border-gray-200 overflow-hidden">
 
-      {/* ================= Loading Overlay ================= */}
+      {/* Loading Overlay */}
       {loading && (
-        <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-white/80 backdrop-blur-md">
+        <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-white/80 backdrop-blur-sm">
           <Loader size="lg" />
-          <p className="mt-4 text-sm font-semibold text-gray-700 animate-pulse">
+          <p className="mt-3 text-sm font-medium text-gray-600 animate-pulse">
             {isEditMode ? "Updating Book Details..." : "Uploading Book & Files..."}
           </p>
         </div>

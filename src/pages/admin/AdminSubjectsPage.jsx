@@ -60,17 +60,6 @@ export default function AdminSubjectsPage() {
                     onYearChange={setYear}
                 />
 
-                {/* Alert - with a fixed height placeholder to prevent layout jumps if needed, or just conditional */}
-                <div className="mb-6">
-                    {alert && (
-                        <AlertMessage
-                            type={alert.type}
-                            message={alert.message}
-                            onClose={() => setAlert(null)}        // If onClose is called it will setAlert to null
-                        />
-                    )}
-                </div>
-
                 <div className="space-y-10">
                     {/* Subject Form */}
                     <section>
@@ -89,6 +78,17 @@ export default function AdminSubjectsPage() {
                             branches={Branches}
                         />
                     </section>
+                    
+                    {/* Alert - with a fixed height placeholder to prevent layout jumps if needed, or just conditional */}
+                    <div className="mb-6">
+                        {alert && (
+                            <AlertMessage
+                                type={alert.type}
+                                message={alert.message}
+                                onClose={() => setAlert(null)}        // If onClose is called it will setAlert to null
+                            />
+                        )}
+                    </div>
 
                     {/* Subject List - Only render if filters are selected to keep UI clean */}
                     {isReady && (
