@@ -14,6 +14,8 @@ import BookListing from "../pages/BookListing";
 import ProjectListing from "../pages/ProjectListing";
 import AdminProjectsPage from "../pages/admin/AdminProjectsPage";
 import AdminBooksPage from "../pages/admin/AdminBooksPage";
+import ContactUs from "../pages/ContactUs";
+import AboutUs from "../pages/AboutUs";
 
 export const router = createBrowserRouter([
     /* =======================
@@ -46,6 +48,14 @@ export const router = createBrowserRouter([
                 path: "projects",
                 element: <ProjectListing />,
                 loader: projectListingLoader,
+            },
+            {
+                path : "contactus",
+                element:<ContactUs/>,   
+            },
+            {
+                path : "aboutus",
+                element:<AboutUs/>,
             }
         ],
     },
