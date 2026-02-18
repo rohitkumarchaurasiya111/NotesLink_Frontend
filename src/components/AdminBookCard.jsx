@@ -96,7 +96,7 @@ export default function AdminBookCard({ book, onEdit }) {
             <div className="flex items-center gap-1 mt-0.5">
               <HashtagIcon className="h-3.5 w-3.5 text-gray-400" />
               <span className="text-xs font-semibold text-gray-700">
-                {"Display Order: " + displayOrder ?? "-"}
+                {"Display Order: " + (displayOrder ?? "-")}
               </span>
             </div>
           </div>

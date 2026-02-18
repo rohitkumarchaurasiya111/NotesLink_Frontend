@@ -13,7 +13,7 @@ export const productListingLoader = async ({ request }) => {
     const storedUser = localStorage.getItem("noteslink_user");              //Loader runs outside of the React Tree. So, Using LocalStorage to Extract the User Data
     const user = storedUser ? JSON.parse(storedUser) : null;
     
-    const college = user.collegeId || 1;
+    const college = user?.collegeId || 1;
 
     const response = await getSubjectListOfSpecificCollegeAndYear(college, year);
     return { products: response.data, year }
