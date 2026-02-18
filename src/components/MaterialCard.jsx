@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { StarIcon } from "../icons/star-icon";
 import { CustomFullScreenModal } from "./CustomFullScreenModal";
+import { Link } from "react-router-dom";
 
 // Displays the Material in card format
 export default function ListCard({ item, editMode, onSelectMaterial }) {
@@ -76,9 +77,8 @@ export default function ListCard({ item, editMode, onSelectMaterial }) {
         onClose={() => setOpen(false)}
         iframeSrc={previewUrl}
       >
-        <h1>Error: Contact Admin</h1>
+        <h1>Error: <Link to="/contactus">Contact Admin</Link></h1>
       </CustomFullScreenModal>
-
     </>
   );
 }
