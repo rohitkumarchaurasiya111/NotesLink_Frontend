@@ -1,17 +1,26 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import axios from "axios";
 import { StarIcon } from "../icons/star-icon";
 import { CustomFullScreenModal } from "./CustomFullScreenModal";
-import { Link } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import { decryptLink } from "../util/decrypt";
+import { AuthContext } from "../contexts/AuthContext";
+import { UserRole } from "../constants/UserRole";
 
 // Displays the Material in card format
 export default function ListCard({ item, editMode, onSelectMaterial }) {
   const [open, setOpen] = useState(false);
   const [previewUrl, setPreviewUrl] = useState("");
+  const navigate = useNavigate();
+  const { user } = useContext(AuthContext);
 
   const openMaterial = () => {
     setPreviewUrl(item.driveLink);
     setOpen(true);
+  };
+
+  const getPremium = () => {
+    navigate("/premium");
   };
 
   return (
@@ -47,12 +56,25 @@ export default function ListCard({ item, editMode, onSelectMaterial }) {
         </p>
 
         <div className="mt-4 flex items-center justify-between">
-          <button
-            onClick={() => openMaterial()}
-            className="text-sm font-medium text-blue-600 hover:underline"
-          >
-            Open Material →
-          </button>
+          {
+            (user.role != UserRole.PREMIUM && item.isPremium) ? (
+              <button
+                onClick={() => getPremium()}
+                className="text-sm font-medium text-blue-600 hover:underline"
+              >
+                Get Premium →
+              </button>
+            ) : (
+              <button
+                onClick={() => openMaterial()}
+                className="text-sm font-medium text-blue-600 hover:underline"
+              >
+                Open Material →
+              </button>
+            )
+
+          }
+
 
           {item.isPremium && (
             <span className="rounded-full bg-yellow-100 px-2 py-0.5 text-xs font-medium text-yellow-800">
@@ -75,9 +97,9 @@ export default function ListCard({ item, editMode, onSelectMaterial }) {
       <CustomFullScreenModal
         isOpen={open}
         onClose={() => setOpen(false)}
-        iframeSrc={previewUrl}
+        iframeSrc={decryptLink(previewUrl)}
       >
-        <h1>Error: <Link to="/contactus">Contact Admin</Link></h1>
+        <h1>Error: <NavLink to="/contactus"><u>Contact Admin</u></NavLink></h1>
       </CustomFullScreenModal>
     </>
   );

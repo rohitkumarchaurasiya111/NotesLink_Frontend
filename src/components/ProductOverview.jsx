@@ -1,3 +1,4 @@
+import { NavLink } from 'react-router-dom'
 import Highlights from './Highlights'
 import ListCard from './MaterialCard'
 import MaterialsList from './MaterialsList'
@@ -19,13 +20,13 @@ export default function ProductOverview({ specificProduct, materials }) {
           >
             {/* College */}
             <li className="flex items-center font-medium text-gray-900">
-              {specificProduct.college_name}
+              <NavLink to={`/subjects?year=FIRST`}>{specificProduct.college_name}</NavLink>
               <span className="mx-2 text-gray-300">/</span>
             </li>
 
             {/* Course */}
             <li className="flex items-center font-medium text-gray-900">
-              {specificProduct.year + " Year"}
+              <NavLink to={`/subjects?year=${specificProduct.year}`}>{specificProduct.year + " YEAR"}</NavLink>
               <span className="mx-2 text-gray-300">/</span>
             </li>
 
@@ -72,7 +73,7 @@ export default function ProductOverview({ specificProduct, materials }) {
         </div>
 
         {/* Different Notes will be here in the form of List */}
-        <MaterialsList materials={materials}/>
+        <MaterialsList materials={materials} />
       </div>
 
     </div>
