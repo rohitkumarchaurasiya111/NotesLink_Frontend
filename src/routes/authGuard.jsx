@@ -19,7 +19,7 @@ export function requirePremium() {
         throw redirect("/login");
     }
 
-    if (!user || user.role !== UserRole.PREMIUM) {
+    if (!user || user.role === UserRole.FREE) {
         throw redirect("/");                    //If not Premium, Redirects to Pricing Page
     }
 }

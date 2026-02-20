@@ -57,7 +57,7 @@ export default function ListCard({ item, editMode, onSelectMaterial }) {
 
         <div className="mt-4 flex items-center justify-between">
           {
-            (user.role != UserRole.PREMIUM && item.isPremium) ? (
+            (user.role == UserRole.FREE && item.isPremium) ? (
               <button
                 onClick={() => getPremium()}
                 className="text-sm font-medium text-blue-600 hover:underline"
