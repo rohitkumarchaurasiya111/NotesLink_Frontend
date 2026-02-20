@@ -49,7 +49,7 @@ export default function ProductOverview({ specificProduct, materials }) {
             <div className="w-full">
               <img
                 alt={specificProduct.name}
-                src={specificProduct.imageURL}
+                src={specificProduct.imageURL || "https://res.cloudinary.com/dfdusmc9k/image/upload/SubjectImage_jydtuy.png"}
                 className="w-full sm:w-4/5 lg:w-3/5 mx-auto rounded-lg object-cover lg:sticky lg:top-20"
               />
             </div>

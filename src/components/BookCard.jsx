@@ -20,7 +20,7 @@ export default function BookCard({ book }) {
       {/* Image Container */}
       <div className="relative h-48 sm:h-56 w-full overflow-hidden bg-gray-100">
         <img
-          src={imageURL}
+          src={imageURL || "https://res.cloudinary.com/dfdusmc9k/image/upload/Book_Cover_Image_c97hus.png"}
           alt={title}
           loading="lazy"
           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"

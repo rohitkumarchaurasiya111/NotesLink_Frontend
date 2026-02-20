@@ -13,22 +13,16 @@ export default function ProjectCard({ project }) {
 
     return (
         <div className="group flex h-full flex-col overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
-            
+
             {/* Image Section */}
             <div className="relative h-48 w-full overflow-hidden bg-gray-100 sm:h-56">
-                {imageURL ? (
-                    <img
-                        src={imageURL}
-                        alt={name}
-                        loading="lazy"
-                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                ) : (
-                    <div className="flex h-full items-center justify-center bg-gray-50 text-sm font-medium text-gray-400">
-                        No Preview Available
-                    </div>
-                )}
-                
+                <img
+                    src={imageURL || "https://res.cloudinary.com/dfdusmc9k/image/upload/Project_Cover_Image_rzze7w.png"}
+                    alt={name}
+                    loading="lazy"
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+
                 {/* Difficulty Badge (Overlay for better space usage) */}
                 {difficultyLevel && (
                     <div className="absolute top-3 right-3">
@@ -41,7 +35,7 @@ export default function ProjectCard({ project }) {
 
             {/* Content Section (Flex grow pushes footer down) */}
             <div className="flex flex-grow flex-col p-5 space-y-3">
-                
+
                 {/* Title */}
                 <h3 className="line-clamp-1 text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
                     {name}
@@ -69,7 +63,7 @@ export default function ProjectCard({ project }) {
             {(deployedLink || githubLink) && (
                 <div className="border-t border-gray-100 px-5 py-4 bg-gray-50/50">
                     <div className="flex items-center justify-between">
-                        
+
                         {/* Live Demo Link */}
                         {deployedLink ? (
                             <a
