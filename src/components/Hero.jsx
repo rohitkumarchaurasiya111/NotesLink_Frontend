@@ -6,9 +6,11 @@ import { Link, NavLink } from 'react-router-dom';
 function ActionButtons() {
     return (
         <div className="flex gap-4">
-            <Button size="large">
-                Explore
-            </Button>
+            <NavLink to={`/explore`}>
+                <Button size="large">
+                    Explore our other products
+                </Button>
+            </NavLink>
             <NavLink to={`/subjects`}>
                 <Button size="large" variant="text" endAdornment={<CircleArrowRightIcon className="size-6 stroke-inherit" />}>
                     See More

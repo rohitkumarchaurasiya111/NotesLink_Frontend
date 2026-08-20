@@ -17,13 +17,16 @@ import AdminBooksPage from "../pages/admin/AdminBooksPage";
 import ContactUs from "../pages/ContactUs";
 import AboutUs from "../pages/AboutUs";
 import LoginPage from "../pages/LoginPage";
-import { requireAdmin, requireAuth, requirePremium } from "./authGuard";
+import ErrorSection7 from "../pages/Error404";
+import Explore from "../pages/Explore";
+// import { requireAdmin, requireAuth, requirePremium } from "./authGuard";
 
 export const router = createBrowserRouter([
     /* USER ROUTES (UserLayout) */
     {
         path: "/",
         element: <UserLayout />,
+        errorElement: <ErrorSection7 />,
         children: [
             /* Public Routes */
             {
@@ -42,39 +45,36 @@ export const router = createBrowserRouter([
                 path: "aboutus",
                 element: <AboutUs />,
             },
+            {
+                path: "explore",
+                element: <Explore />,
+            },
 
             // Protected Routes
             {
                 path: "subjects",
                 element: <ProductListing />,
-                loader: async (args) => {          // args is the parameter object that React Router automatically passes to a loader. It contains useful data like:URL parameters, Request object, Route information. You pass args to your loader so it can use that data
-                    requireAuth();
-                    return productListingLoader(args);
-                },
+                loader: productListingLoader,
             },
             {
                 path: "subject/:id/:name",
                 element: <ProductDetails />,
-                loader: async (args) => {
-                    requireAuth();
-                    return productDetailsLoader(args);
-                },
+                loader: productDetailsLoader,
             },
             {
                 path: "books",
                 element: <BookListing />,
-                loader: async (args) => {
-                    requireAuth();
-                    return bookListingLoader(args);
-                },
+                loader: bookListingLoader,
             },
             {
                 path: "projects",
                 element: <ProjectListing />,
-                loader: async (args) => {
-                    requirePremium();
-                    return projectListingLoader(args);
-                },
+                loader: projectListingLoader,
+            },
+            // Catch-all 404 Route for unregistered user URLs
+            {
+                path: "*",
+                element: <ErrorSection7 />,
             },
         ],
     },
@@ -83,7 +83,7 @@ export const router = createBrowserRouter([
     {
         path: "/admin",
         element: <AdminLayout />,
-        loader: requireAdmin,           //To access the below pages, you need to go through this authGuard
+        // loader: requireAdmin,           //To access the below pages, you need to go through this authGuard
         children: [
             {
                 index: true,

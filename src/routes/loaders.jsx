@@ -1,7 +1,6 @@
 // All the code blocks where we are fetching some data using API and giving those data to components, will be here and we will only pass the data to components using react-routers.
 
-import { useContext } from "react";
-import { getAllBookDetails, getAllMaterialsForGivenSubject, getAllProjectDetails, getSpecificSubjectDetails, getSubjectListOfSpecificCollegeAndYear } from "../api/userApi";
+import { getAllBookDetails, getAllMaterialsForGivenSubject, getAllProjectDetails, getSpecificSubjectDetails, getSubjectListOfSpecificCollegeAndYear } from "../api/userAPI";
 import { Years } from "../constants/Years";
 
 // This will fetch the subejcts of Specific Year and college

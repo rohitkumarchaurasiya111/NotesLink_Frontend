@@ -2,7 +2,7 @@ import { useLoaderData, useNavigation } from "react-router-dom";
 import { useMemo, useState } from "react";
 
 import Loader from "../components/Loader";
-import OtherNavbar from "../components/OtherNavbar";
+import OtherNavbar from "../components/Navbar";
 import BuildingMessage from "../components/BuildingMessage";
 import SearchInput from "../components/SearchInput";
 import ProjectCard from "../components/ProjectCard";
@@ -31,7 +31,6 @@ export default function ProjectListing() {
 
     return (
         <>
-            <OtherNavbar />
 
             <div className="bg-gray-50 min-h-screen w-full">
                 <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">

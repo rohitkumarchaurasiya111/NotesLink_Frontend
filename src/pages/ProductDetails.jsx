@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import ProductOverview from "../components/ProductOverview"
-import { getSpecificSubjectDetails, getAllMaterialsForGivenSubject } from "../api/userApi";
 import { useLoaderData, useParams } from "react-router-dom";
 
 

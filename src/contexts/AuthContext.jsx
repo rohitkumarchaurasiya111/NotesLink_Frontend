@@ -1,4 +1,6 @@
 import { createContext, useState, useEffect } from "react";
+import { loginOrRegister } from "../api/authAPI";
+import { getUserDetails } from "../api/authAPI";
 
 // Global authentication context in React.
 // It:
@@ -12,14 +14,37 @@ export const AuthContext = createContext();     //Create Gloabl Context names Au
 //Wrapper component that provides authentication data to the entire app.
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);           //stores logged-in user info
+  const [loading, setLoading] = useState(true);
 
-  //Loading user from localStorage
+
+  //Restore session on refresh
   useEffect(() => {
-    const storedUser = localStorage.getItem("noteslink_user");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
+    async function getCurrentUserDetails() {
+      try {
+        setLoading(true);
+        const response = await getUserDetails();
+
+        const { name, email, role, collegeId, collegeLogo } = response.data;
+        setUser({ name, email, role, collegeId, collegeLogo });
+      } catch {
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
+
     }
+    getCurrentUserDetails();
   }, []);
+
+  //Login Function 
+  const login = async (googleIdToken) => {
+    const apiResponse = await loginOrRegister(googleIdToken);
+
+    const { token, name, email, role, collegeId, collegeLogo } = apiResponse.data;
+
+    const userData = { name, email, role, collegeId, collegeLogo };
+    setUser(userData);
+  };
 
   //Logout Function
   const logout = () => {
@@ -28,9 +53,9 @@ export function AuthProvider({ children }) {
     setUser(null);
   };
 
-  //Providing global auth data, this makes these values (user, setUser, logout) available globally 
+  //Providing global auth data, this makes these values (user, setUser, logout, loading) available globally 
   return (
-    <AuthContext.Provider value={{ user, setUser, logout }}>
+    <AuthContext.Provider value={{ user, setUser, login, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );
