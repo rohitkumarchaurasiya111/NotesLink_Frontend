@@ -1,9 +1,13 @@
 name: Deploy NotesLink Frontend to Hostinger
 
+# on:
+#   push:
+#     branches:
+#       - master
+
+# Manual Trigger
 on:
-  push:
-    branches:
-      - master
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
