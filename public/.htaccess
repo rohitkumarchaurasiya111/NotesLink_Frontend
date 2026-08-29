@@ -1,0 +1,21 @@
+<!-- In a Vite + React Single-Page Application (SPA), routing is handled entirely in the browser using JavaScript (React Router) rather than traditional multi-page server requests.
+When a user opens uat.noteslink.in/login or reloads an internal page, the Apache/LiteSpeed web server on Hostinger searches its physical disk for a directory named /login/. Because no such directory exists, the server returns a 403 Forbidden or 404 Not Found error.
+The .htaccess rewrite rules instruct the web server how to handle dynamic frontend routes:
+<IfModule mod_rewrite.c>: Ensures the server only executes these rules if Apache's rewrite engine module is enabled.
+RewriteEngine On: Turns on the URL rewriting engine.
+RewriteBase /: Sets the base directory for rewritten URLs to the root.
+RewriteRule ^index\.html$ - [L]: If the incoming request is already asking for index.html, stops processing rewrite rules and serves the file directly.
+RewriteCond %{REQUEST_FILENAME} !-f: Checks if the requested path is NOT an existing file (such as assets/index-xxx.js, images, or CSS files).
+RewriteCond %{REQUEST_FILENAME} !-d: Checks if the requested path is NOT an existing physical directory.
+RewriteRule . /index.html [L]: If the request is neither a physical file nor a directory, rewrites the request internally to /index.html.
+Once /index.html loads, React mounts in the browser, reads the current URL from the browser's address bar, and displays the correct route. -->
+
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /index.html [L]
+</IfModule>
