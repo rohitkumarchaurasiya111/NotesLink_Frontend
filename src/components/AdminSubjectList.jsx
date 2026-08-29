@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState, useDeferredValue } from "react";
 import AdminSubjectCard from "./AdminSubjectCard";
-import { getSubjectListOfSpecificCollegeAndYear } from "../api/userApi";
+import { getSubjectListOfSpecificCollegeAndYear } from "../api/userAPI";
 import SearchInput from "./SearchInput";
 import Loader from "./Loader"; // Reusing your Loader component
 import { 

@@ -1,4 +1,4 @@
-import { getAllCollegeDetails, getAllMaterialsForGivenSubject } from "../../api/userApi";
+import { getAllCollegeDetails, getAllMaterialsForGivenSubject } from "../../api/userAPI";
 import { CustomFullScreenModal } from "../../components/CustomFullScreenModal";
 import { Years } from "../../constants/Years";
 import { useState, useEffect, useCallback } from "react";

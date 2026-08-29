@@ -1,4 +1,4 @@
-import { getAllCollegeDetails } from "../../api/userApi";
+import { getAllCollegeDetails } from "../../api/userAPI";
 import AlertMessage from "../../components/AlertMessage";
 import { useEffect, useState, useMemo } from "react";
 import { Years } from "../../constants/Years";
