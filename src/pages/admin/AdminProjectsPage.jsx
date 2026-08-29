@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { getAllProjectDetails } from "../../api/userApi";
 import AlertMessage from "../../components/AlertMessage";
 import AdminProjectList from "../../components/AdminProjectList";
 import AdminProjectForm from "../../components/AdminProjectForm";
