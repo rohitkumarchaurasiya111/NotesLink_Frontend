@@ -11,6 +11,12 @@ export async function loginOrRegister(googleIdToken) {
     return response;
 }
 
+//Logout
+export async function logoutAPI() {
+    const response = await api.post(`${AUTH_BASE}/logout`);
+    return response;
+}
+
 export async function getUserDetails() {
     const response = await api.get(`${AUTH_BASE}/me`);
     return response;

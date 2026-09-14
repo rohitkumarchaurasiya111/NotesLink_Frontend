@@ -3,41 +3,38 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { getAllCollegeDetails } from "../api/userAPI";
 import GoogleLoginButton from "../components/GoogleLoginButton";
 import { AuthContext } from "../contexts/AuthContext";
+import { useTheme } from "../contexts/ThemeContext";
 import NotesLinkFullLogo from "../assets/NotesLinkFullLogo.png";
+import NotesLinkFullLogoDark from "../assets/NotesLinkFullLogo_Dark.png";
 
 export default function Login() {
   const navigate = useNavigate();
   const { login, user, loading } = useContext(AuthContext);
+  const { isDark } = useTheme();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const redirectPath = searchParams.get("redirectTo") || "/subjects";
 
   const [supportedColleges, setSupportedColleges] = useState([]);
   const [isLoadingColleges, setIsLoadingColleges] = useState(false);
   const [error, setError] = useState("");
 
-  const location = useLocation();
-  const redirectPath = location.state?.from || "/subjects";
-
-  // Redirect if already logged in
   useEffect(() => {
-    if (!loading && user) {
-      navigate(redirectPath, { replace: true });
-    }
+    if (!loading && user) navigate(redirectPath, { replace: true });
   }, [user, navigate, redirectPath, loading]);
 
-  // Fetch supported colleges
   useEffect(() => {
-    const fetchColleges = async () => {
+    (async () => {
       try {
         setIsLoadingColleges(true);
-        const response = await getAllCollegeDetails();
-        setSupportedColleges(response.data || []);
-      } catch (err) {
-        console.error("Failed to fetch supported colleges:", err);
+        const res = await getAllCollegeDetails();
+        setSupportedColleges(res.data || []);
+      } catch {
+        // silent
       } finally {
         setIsLoadingColleges(false);
       }
-    };
-
-    fetchColleges();
+    })();
   }, []);
 
   const handleGoogleSuccess = async (googleResponse) => {
@@ -45,136 +42,124 @@ export default function Login() {
       setError("");
       await login(googleResponse.credential);
     } catch (err) {
-      console.error("Login failed:", err);
-      setError(err.response?.data?.message || "Authentication failed. Please check your credentials.");
+      setError(err.response?.data?.message || "Authentication failed. Please use your official college email.");
     }
   };
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row bg-[#f0f4f8]">
-      {/* Visual Brand Side Panel */}
-      <div 
-        className="hidden md:flex md:w-1/2 lg:w-3/5 relative flex-col justify-center items-center p-10 text-white text-center bg-cover bg-center"
-        style={{
-          backgroundImage: `linear-gradient(135deg, rgba(0, 82, 204, 0.85), rgba(140, 86, 212, 0.85)), url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2070&auto=format&fit=crop')`
-        }}
-      >
-        <h1 className="text-5xl font-extrabold tracking-tight mb-3 drop-shadow-sm">
-          NotesLink
-        </h1>
-        <p className="text-lg font-light max-w-md opacity-95 leading-relaxed">
-          Your centralized college hub. Access curated study notes, syllabus materials, and past papers seamlessly.
-        </p>
-      </div>
+    <div className="min-h-screen flex bg-[var(--bg-base)]">
 
-      {/* Auth Form & Colleges Panel */}
-      <div className="w-full md:w-1/2 lg:w-2/5 flex items-center justify-center bg-[#f8fafc] py-10 px-6 sm:px-12">
-        <div className="w-full max-w-md flex flex-col items-center">
-          
-          {/* Logo */}
+      {/* ── Left brand panel ── */}
+      <div className="hidden md:flex md:w-1/2 lg:w-3/5 flex-col justify-center items-center bg-[var(--bg-surface)] border-r border-[var(--border-subtle)] p-12 lg:p-16">
+        <div className="max-w-md w-full">
           <img
-            src={NotesLinkFullLogo}
-            alt="NotesLink Logo"
-            className="h-10 w-auto object-contain mb-4"
+            src={isDark ? NotesLinkFullLogoDark : NotesLinkFullLogo}
+            alt="NotesLink"
+            className="h-8 w-auto object-contain mb-10"
           />
 
-          {/* Lock Icon */}
-          <div className="h-11 w-11 rounded-full bg-[#0052cc] flex items-center justify-center text-white mb-2 shadow-sm">
-            <svg 
-              xmlns="http://www.w3.org/2000/svg" 
-              className="h-5 w-5" 
-              fill="none" 
-              viewBox="0 0 24 24" 
-              stroke="currentColor" 
-              strokeWidth={2}
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-            </svg>
-          </div>
-
-          <h2 className="text-2xl font-bold text-slate-800">
-            Welcome Back
-          </h2>
-          <p className="text-sm text-slate-500 mt-1 mb-5 text-center">
-            Sign in to access your college repository.
+          <h1 className="text-3xl lg:text-4xl font-semibold tracking-tight text-[var(--text-primary)] mb-4 leading-tight">
+            Your academic hub, <br />
+            <span className="text-[var(--accent)]">all in one place.</span>
+          </h1>
+          <p className="text-sm text-[var(--text-secondary)] leading-relaxed mb-10">
+            Access curated university notes, semester-wise question banks, standard reference textbooks and capstone projects—organized by your college and branch.
           </p>
 
-          {/* Notice Alert Box */}
-          <div className="w-full bg-blue-50 border border-blue-200 rounded-xl p-4 mb-5 text-left">
-            <div className="flex items-start space-x-3">
-              <svg 
-                className="w-5 h-5 text-[#0052cc] flex-shrink-0 mt-0.5" 
-                fill="currentColor" 
-                viewBox="0 0 20 20"
-              >
-                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
-              </svg>
-              <div>
-                <h4 className="text-xs font-bold text-blue-900 uppercase tracking-wide">
-                  Authentication Required
-                </h4>
-                <p className="text-xs text-blue-700 mt-0.5 leading-relaxed">
-                  Please strictly use your <strong>official college email ID</strong> to log in. Personal emails (e.g., @gmail.com) will not grant access to your college hub.
-                </p>
-              </div>
-            </div>
+          {/* Bullet list */}
+          <ul className="space-y-3">
+            {[
+              "Semester-organized lecture notes",
+              "5+ years of past question papers",
+              "100% free — no paywalls",
+            ].map((item) => (
+              <li key={item} className="flex items-center gap-3 text-sm text-[var(--text-secondary)]">
+                <div className="w-5 h-5 rounded-full bg-[var(--accent-light)] text-[var(--accent)] flex items-center justify-center flex-shrink-0">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                </div>
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      {/* ── Right auth panel ── */}
+      <div className="w-full md:w-1/2 lg:w-2/5 flex items-start justify-center bg-[var(--bg-base)] py-12 px-6 sm:px-10 overflow-y-auto">
+        <div className="w-full max-w-md">
+          {/* Mobile logo */}
+          <img
+            src={isDark ? NotesLinkFullLogoDark : NotesLinkFullLogo}
+            alt="NotesLink"
+            className="h-7 w-auto object-contain mb-8 md:hidden"
+          />
+
+          <h2 className="text-xl font-semibold text-[var(--text-primary)] mb-1">Welcome back</h2>
+          <p className="text-sm text-[var(--text-secondary)] mb-6">
+            Sign in with your official college email to continue.
+          </p>
+
+          {/* Alert */}
+          <div className="flex gap-3 p-3.5 rounded-xl bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800/40 mb-6">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 text-[var(--accent)] flex-shrink-0 mt-0.5">
+              <circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="8" x2="12" />
+              <line x1="12" y1="16" x2="12.01" y2="16" />
+            </svg>
+            <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
+              Use your <strong className="font-semibold text-[var(--text-primary)]">official college email</strong> — personal emails (@gmail.com, etc.) won't grant access.
+            </p>
           </div>
 
-          {/* Google Login Button */}
-          <div className="w-full flex justify-center mb-3">
+          {/* Google login */}
+          <div className="flex justify-center mb-3">
             <GoogleLoginButton onSuccess={handleGoogleSuccess} />
           </div>
 
-          {/* Error Message */}
+          {/* Error */}
           {error && (
-            <p className="text-sm text-red-500 mt-2 text-center font-medium">
-              {error}
-            </p>
+            <p className="text-xs text-red-500 dark:text-red-400 text-center mt-2 mb-1">{error}</p>
           )}
 
           {/* Divider */}
-          <div className="w-full relative my-5">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-slate-300" />
-            </div>
-            <div className="relative flex justify-center text-xs">
-              <span className="px-3 bg-[#f8fafc] text-slate-500 font-medium tracking-wide">
-                Colleges We Support
-              </span>
-            </div>
+          <div className="relative flex items-center my-6">
+            <div className="flex-1 h-px bg-[var(--border-subtle)]" />
+            <span className="px-3 text-xs text-[var(--text-tertiary)] bg-[var(--bg-base)]">Supported colleges</span>
+            <div className="flex-1 h-px bg-[var(--border-subtle)]" />
           </div>
 
-          {/* Supported Colleges List */}
-          <div className="w-full max-h-52 overflow-y-auto pr-1">
+          {/* Colleges */}
+          <div className="max-h-56 overflow-y-auto pr-1">
             {isLoadingColleges ? (
-              <div className="flex justify-center items-center py-6">
-                <div className="animate-spin rounded-full h-7 w-7 border-b-2 border-[#0052cc]"></div>
+              <div className="flex justify-center py-6">
+                <div className="w-6 h-6 rounded-full border-2 border-[var(--border-subtle)] border-t-[var(--accent)] animate-spin" />
               </div>
             ) : supportedColleges.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                {supportedColleges.map((college, index) => (
+              <div className="grid grid-cols-2 gap-2">
+                {supportedColleges.map((college, i) => (
                   <div
-                    key={index}
-                    className="flex items-center space-x-2.5 p-2 bg-white border border-slate-200 rounded-lg shadow-sm hover:bg-slate-100 hover:border-slate-300 transition-colors"
+                    key={i}
+                    title={college.name}
+                    className="flex items-center gap-2 p-2 rounded-lg bg-[var(--bg-surface)] border border-[var(--border-subtle)] hover:border-[var(--border-default)] transition-colors min-w-0"
                   >
                     <img
                       src={college.logoURL}
-                      alt={`${college.name} logo`}
-                      className="h-7 w-7 rounded-full object-contain border border-slate-100 p-0.5 flex-shrink-0 bg-white"
+                      alt={college.name}
+                      className="h-5 w-5 rounded object-contain border border-[var(--border-subtle)] bg-white flex-shrink-0"
                     />
-                    <span className="text-xs font-semibold text-slate-700 truncate">
+                    <span className="text-xs font-medium text-[var(--text-primary)] truncate" title={college.name}>
                       {college.name}
                     </span>
                   </div>
                 ))}
               </div>
             ) : (
-              <p className="text-center text-xs text-slate-500 py-3">
-                No supported colleges found at the moment.
+              <p className="text-xs text-[var(--text-tertiary)] text-center py-3">
+                No colleges listed yet.
               </p>
             )}
           </div>
-
         </div>
       </div>
     </div>

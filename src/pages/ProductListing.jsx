@@ -1,11 +1,5 @@
 import ProductCard from "../components/ProductCard";
-import OtherNavbar from "../components/Navbar";
-import {
-    useLoaderData,
-    useNavigate,
-    useNavigation,
-} from "react-router-dom";
-import Loader from "../components/Loader";
+import { useLoaderData, useNavigate, useNavigation } from "react-router-dom";
 import BuildingMessage from "../components/BuildingMessage";
 import { Years } from "../constants/Years";
 import { useMemo, useState } from "react";
@@ -13,132 +7,129 @@ import useDebounce from "../hooks/useDebounce";
 import SearchInput from "../components/SearchInput";
 
 export default function ProductListing() {
-    const navigation = useNavigation(); // To show loading state
-    const { products, year } = useLoaderData(); // Products + selected year
-    const navigate = useNavigate();
+  const navigation = useNavigation();
+  const { products, year } = useLoaderData();
+  const navigate = useNavigate();
 
-    // Normalize products (defensive, production-safe)
-    const safeProducts = Array.isArray(products) ? products : [];
+  const safeProducts = Array.isArray(products) ? products : [];
+  const [search, setSearch] = useState("");
+  const debouncedSearch = useDebounce(search, 300);
+  const isYearLoading =
+    navigation.state === "loading" &&
+    (!navigation.location || navigation.location.pathname === "/subjects");
 
-    // Search state
-    const [search, setSearch] = useState("");
-    const debouncedSearch = useDebounce(search, 300);
+  const handleYearChange = (newYear) => {
+    navigate(`/subjects?year=${newYear}`);
+  };
 
-    // Handle year change
-    const handleYearChange = (newYear) => {
-        navigate(`/subjects?year=${newYear}`);
-    };
-
-    // Optimized client-side search (scoped to selected year)
-    const filteredProducts = useMemo(() => {
-        if (!debouncedSearch.trim()) return safeProducts;
-
-        const q = debouncedSearch.toLowerCase();
-
-        return safeProducts.filter((product) =>
-            product.name?.toLowerCase().includes(q) ||
-            product.description?.toLowerCase().includes(q) ||
-            product.branch?.toLowerCase().includes(q)
-        );
-    }, [safeProducts, debouncedSearch]);
-
-    return (
-        <>
-            <div className="bg-gray-50 min-h-screen w-full">
-                <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
-
-                    {/* =====================
-                        PAGE CONTROLS
-                       ===================== */}
-                    <div className="mb-10 flex flex-col items-center justify-center gap-4 md:flex-row md:items-start">
-
-                        {/* Year Dropdown */}
-                        <div className="w-full md:w-auto">
-                            <select
-                                value={year}
-                                onChange={(e) => handleYearChange(e.target.value)}
-                                className="w-full appearance-none rounded-xl border border-gray-300 bg-white px-4 py-3 text-base text-gray-700 shadow-sm transition-all focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 md:w-48"
-                                style={{
-                                    backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e")`,
-                                    backgroundPosition: `right 0.5rem center`,
-                                    backgroundRepeat: `no-repeat`,
-                                    backgroundSize: `1.5em 1.5em`
-                                }}
-                            >
-                                {Years.map((yr) => (
-                                    <option key={yr} value={yr}>
-                                        {yr.charAt(0) + yr.slice(1).toLowerCase()} Year
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-
-                        {/* Search Input */}
-                        <div className="w-full max-w-xl">
-                            <SearchInput
-                                value={search}
-                                onChange={setSearch}
-                                placeholder="Search subjects by name, description and branch"
-                            />
-                        </div>
-                    </div>
-
-                    {/* =====================
-                        CONTENT AREA
-                       ===================== */}
-
-                    {/* Loading State */}
-                    {navigation.state === "loading" && (
-                        <div className="flex justify-center py-12">
-                            <Loader message="Loading Subjects..." />
-                        </div>
-                    )}
-
-                    {/* No subjects for selected year */}
-                    {navigation.state !== "loading" && safeProducts.length === 0 && (
-                        <div className="mt-8 flex justify-center">
-                            <BuildingMessage message="We’re currently adding subjects for this year." />
-                        </div>
-                    )}
-
-                    {/* No search results */}
-                    {navigation.state !== "loading" &&
-                        safeProducts.length > 0 &&
-                        filteredProducts.length === 0 &&
-                        debouncedSearch.trim() && (
-                            <div className="mt-12 flex flex-col items-center justify-center text-center text-gray-500">
-                                <div className="rounded-full bg-gray-100 p-4 mb-3">
-                                    <svg className="h-8 w-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                                    </svg>
-                                </div>
-                                <p className="text-lg font-semibold text-gray-900">
-                                    No subjects found for “{debouncedSearch}”
-                                </p>
-                                <p className="mt-2 text-sm text-gray-600">
-                                    Try searching by name, description or branch
-                                </p>
-                            </div>
-                        )
-                    }
-
-                    {/* Products Grid */}
-                    {/* UI UPDATE: 
-                        grid-cols-2 for Phone
-                        lg:grid-cols-5 for Laptop/Windows (standard large screens)
-                    */}
-                    {navigation.state !== "loading" && filteredProducts.length > 0 && (
-                        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5 xl:gap-8">
-                            {filteredProducts.map((product) => (
-                                <ProductCard
-                                    key={product.id}
-                                    product={product}
-                                />
-                            ))}
-                        </div>
-                    )}
-                </div>
-            </div>
-        </>
+  const filteredProducts = useMemo(() => {
+    if (!debouncedSearch.trim()) return safeProducts;
+    const q = debouncedSearch.toLowerCase();
+    return safeProducts.filter(
+      (p) =>
+        p.name?.toLowerCase().includes(q) ||
+        p.description?.toLowerCase().includes(q) ||
+        p.branch?.toLowerCase().includes(q)
     );
+  }, [safeProducts, debouncedSearch]);
+
+  return (
+    <div className="min-h-screen bg-[var(--bg-base)]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+
+        {/* Page header */}
+        <div className="mb-8 pb-6 border-b border-[var(--border-subtle)]">
+          <h1 className="text-2xl sm:text-3xl font-semibold text-[var(--text-primary)] tracking-tight">Subjects</h1>
+          <p className="text-sm text-[var(--text-secondary)] mt-1">
+            Semester-wise lecture notes, PYQs and study materials
+          </p>
+        </div>
+
+        {/* Controls */}
+        <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-8">
+          {/* Year pill tabs */}
+          <div className="flex items-center gap-1.5 flex-wrap">
+            {Years.map((yr) => {
+              const isSelected = year?.toUpperCase() === yr.toUpperCase();
+              return (
+                <button
+                  key={yr}
+                  onClick={() => handleYearChange(yr)}
+                  className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-colors duration-150 border cursor-pointer ${
+                    isSelected
+                      ? "bg-[var(--accent)] text-white border-[var(--accent)]"
+                      : "bg-[var(--bg-surface)] text-[var(--text-secondary)] border-[var(--border-subtle)] hover:border-[var(--border-default)] hover:text-[var(--text-primary)]"
+                  }`}
+                >
+                  {yr.charAt(0) + yr.slice(1).toLowerCase()} Year
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Search */}
+          <div className="sm:ml-auto w-full sm:w-72">
+            <SearchInput
+              value={search}
+              onChange={setSearch}
+              placeholder="Search subjects..."
+            />
+          </div>
+        </div>
+
+        {/* Loading skeleton */}
+        {isYearLoading && (
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+            {Array.from({ length: 10 }).map((_, i) => (
+              <div key={i} className="rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-subtle)] overflow-hidden nl-skeleton">
+                <div className="aspect-[4/3] bg-[var(--bg-muted)]" />
+                <div className="p-3.5 space-y-2">
+                  <div className="h-3 rounded bg-[var(--bg-muted)] w-3/4" />
+                  <div className="h-3 rounded bg-[var(--bg-muted)] w-1/2" />
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Empty — no subjects for year */}
+        {!isYearLoading && safeProducts.length === 0 && (
+          <div className="flex justify-center mt-12">
+            <BuildingMessage message="We're adding curriculum subjects for this academic year." />
+          </div>
+        )}
+
+        {/* Empty — no search results */}
+        {!isYearLoading && safeProducts.length > 0 && filteredProducts.length === 0 && debouncedSearch.trim() && (
+          <div className="flex flex-col items-center justify-center text-center py-20">
+            <div className="w-12 h-12 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-subtle)] flex items-center justify-center text-[var(--text-tertiary)] mb-4">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+                <circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" />
+              </svg>
+            </div>
+            <p className="text-sm font-medium text-[var(--text-primary)] mb-1">No results for "{debouncedSearch}"</p>
+            <p className="text-xs text-[var(--text-secondary)] mb-4">Try a different name or branch</p>
+            <button
+              onClick={() => setSearch("")}
+              className="text-xs font-medium text-[var(--accent)] hover:opacity-75 transition-opacity cursor-pointer"
+            >
+              Clear search
+            </button>
+          </div>
+        )}
+
+        {/* Products grid */}
+        {!isYearLoading && filteredProducts.length > 0 && (
+          <>
+            <p className="text-xs text-[var(--text-tertiary)] mb-4">{filteredProducts.length} subject{filteredProducts.length !== 1 ? "s" : ""}</p>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+              {filteredProducts.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  );
 }

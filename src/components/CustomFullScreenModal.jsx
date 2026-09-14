@@ -1,18 +1,19 @@
 import { useEffect, useState } from "react";
 import { CloseIcon } from "../components/close-icon";
-import Loader from "../components/Loader";
+import PdfLoadingView from "./PdfLoadingView";
 
-//This opens the material using it's iframeSrc
+// This opens the material using its iframeSrc or renders children in full-screen modal
 export const CustomFullScreenModal = ({
   isOpen,
   onClose,
-  children,       //If iframeSrc is not given then this will be rendered
+  children,
   iframeSrc,
   closeOnEsc = true,
   closeOnOverlayClick = false,
+  title,
+  type,
 }) => {
-
-  const [isLoading, setIsLoading] = useState(false);        //To show the Loading state
+  const [isLoading, setIsLoading] = useState(false);
 
   // 🔒 Lock background scroll
   useEffect(() => {
@@ -48,16 +49,15 @@ export const CustomFullScreenModal = ({
   if (!isOpen) return null;
 
   return (
-    // ✅ Escape all layouts
-    <div className="fixed inset-0 z-[9999] bg-black/70"
-      onClick={closeOnOverlayClick ? onClose : undefined}   // //This is attached to the background overlay (the dark area), clicking on the overlay closes the modal
+    <div
+      className="fixed inset-0 z-[9999] bg-black/80 backdrop-blur-md transition-opacity duration-300"
+      onClick={closeOnOverlayClick ? onClose : undefined}
     >
-
       {/* 📄 FULL SCREEN VIEWER */}
-      <div className="fixed inset-0 bg-white relative"
-        onClick={(e) => e.stopPropagation()}          //Prevents the click event from bubbling up, Stops the overlay’s onClick from firing
+      <div
+        className="fixed inset-0 bg-[var(--bg-base)] text-[var(--text-primary)] relative"
+        onClick={(e) => e.stopPropagation()}
       >
-
         {/* 🔒 MOBILE ONLY — Drive UI blocker */}
         <div className="md:hidden fixed top-0 left-0 right-0 h-16 z-[55] pointer-events-auto" />
 
@@ -67,33 +67,34 @@ export const CustomFullScreenModal = ({
           aria-label="Close"
           className="z-[80]
               flex items-center justify-center
-              bg-white shadow-md
-              hover:bg-gray-100
+              bg-[var(--bg-surface)] text-[var(--text-primary)] border border-[var(--border-subtle)] shadow-lg
+              hover:bg-[var(--bg-elevated)]
               active:scale-95
               touch-manipulation
               rounded-full
+              transition-all
 
               /* Mobile */
               fixed top-[env(safe-area-inset-top)] right-[env(safe-area-inset-right)]
-              h-16 w-16
+              h-14 w-14 m-2
 
               /* Desktop */
               md:absolute
               md:top-[28px]
-              md:right-[16px]
+              md:right-[20px]
               md:-translate-y-1/2
-              md:h-12 md:w-12"
+              md:h-11 md:w-11 md:m-0 cursor-pointer"
         >
-          <CloseIcon className="h-8 w-8 text-gray-700" />
+          <CloseIcon className="h-6 w-6 text-[var(--text-primary)]" />
         </button>
 
-        {/* 🔒 DESKTOP — exact Drive pop-out blocker */}
+        {/* 🔒 DESKTOP — Drive pop-out blocker */}
         <div
           className="
             hidden md:block
             absolute
             top-[28px]
-            right-[16px]
+            right-[20px]
             -translate-y-1/2
             h-[48px]
             w-[48px]
@@ -102,15 +103,16 @@ export const CustomFullScreenModal = ({
           "
         />
 
-
         {/* 🧠 CONTENT */}
-        {/* IFRAME — TRUE FULL SCREEN, only if iframeSrc is given*/}
         {iframeSrc ? (
           <>
-            {/* Loader overlay */}
             {isLoading && (
-              <div className="absolute inset-0 z-[70] flex items-center justify-center bg-white">
-                <Loader size="lg" message="Loading material..." />
+              <div className="absolute inset-0 z-[70] flex items-center justify-center bg-[var(--bg-base)]">
+                <PdfLoadingView
+                  title={title}
+                  type={type}
+                  onClose={onClose}
+                />
               </div>
             )}
             <iframe
@@ -122,7 +124,7 @@ export const CustomFullScreenModal = ({
             />
           </>
         ) : (
-          <div className="w-screen h-screen overflow-auto p-6">
+          <div className="w-screen h-screen overflow-auto p-4 sm:p-6 lg:p-8">
             {children}
           </div>
         )}

@@ -1,81 +1,73 @@
-import { NavLink } from 'react-router-dom'
-import Highlights from './Highlights'
-import ListCard from './MaterialCard'
-import MaterialsList from './MaterialsList'
-import Quote from './quote'
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
-}
+import { NavLink } from "react-router-dom";
+import Highlights from "./Highlights";
+import ListCard from "./MaterialCard";
+import MaterialsList from "./MaterialsList";
+import Quote from "./quote";
 
 export default function ProductOverview({ specificProduct, materials }) {
   return (
-    <div className="bg-white">
-      <div className="pt-6">
-        {/* {Breadcrumb - the path trail at the top } */}
-        <nav aria-label="Breadcrumb">
-          <ol
-            role="list"
-            className="mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8 text-sm"
-          >
-            {/* College */}
-            <li className="flex items-center font-medium text-gray-900">
-              <NavLink to={`/subjects?year=FIRST`}>{specificProduct.college_name}</NavLink>
-              <span className="mx-2 text-gray-300">/</span>
-            </li>
+    <div className="bg-[var(--bg-base)] min-h-screen">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-12">
 
-            {/* Course */}
-            <li className="flex items-center font-medium text-gray-900">
-              <NavLink to={`/subjects?year=${specificProduct.year}`}>{specificProduct.year + " YEAR"}</NavLink>
-              <span className="mx-2 text-gray-300">/</span>
+        {/* Breadcrumb */}
+        <nav aria-label="Breadcrumb" className="mb-8">
+          <ol className="flex items-center gap-1.5 text-sm flex-wrap">
+            <li>
+              <NavLink
+                to={`/subjects?year=FIRST`}
+                className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+              >
+                {specificProduct.college_name}
+              </NavLink>
             </li>
-
-            {/* Subject */}
-            <li
-              className="font-medium text-gray-500"
-              aria-current="page"
-            >
+            <li className="text-[var(--text-tertiary)]">/</li>
+            <li>
+              <NavLink
+                to={`/subjects?year=${specificProduct.year}`}
+                className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+              >
+                {specificProduct.year} Year
+              </NavLink>
+            </li>
+            <li className="text-[var(--text-tertiary)]">/</li>
+            <li className="text-[var(--text-primary)] font-medium" aria-current="page">
               {specificProduct.name}
             </li>
           </ol>
         </nav>
 
-
-        {/* Parent */}
-        <div className="w-full px-4 py-10 sm:px-6 lg:px-8 lg:grid lg:grid-cols-3 lg:gap-x-8 lg:items-start">
-
-          {/* IMAGE */}
-          <div className="lg:col-span-1 lg:pr-8">
-            <div className="w-full">
+        {/* Subject header */}
+        <div className="lg:grid lg:grid-cols-3 lg:gap-10 mb-10">
+          {/* Image */}
+          <div className="lg:col-span-1 mb-6 lg:mb-0">
+            <div className="rounded-xl overflow-hidden border border-[var(--border-subtle)] bg-[var(--bg-elevated)]">
               <img
                 alt={specificProduct.name}
                 src={specificProduct.imageURL || "https://res.cloudinary.com/dfdusmc9k/image/upload/SubjectImage_jydtuy.png"}
-                className="w-full sm:w-4/5 lg:w-3/5 mx-auto rounded-lg object-cover lg:sticky lg:top-20"
+                className="w-full object-cover aspect-[4/3] lg:sticky lg:top-20"
               />
             </div>
           </div>
 
-          {/* PRODUCT INFO  */}
-          <div className="mt-8 lg:mt-0 lg:col-span-2 flex justify-center">
-            <div className="max-w-2xl text-center">
-              <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
-                {specificProduct.name}
-              </h1>
-
-              <div className="py-6">
-                <h3 className="sr-only">Description</h3>
-                <p className="text-base text-gray-900">{specificProduct.description}</p>
-                <Highlights />
-              </div>
-            </div>
+          {/* Info */}
+          <div className="lg:col-span-2">
+            <h1 className="text-2xl sm:text-3xl font-semibold text-[var(--text-primary)] tracking-tight mb-3">
+              {specificProduct.name}
+            </h1>
+            <p className="text-sm text-[var(--text-secondary)] leading-relaxed mb-6">
+              {specificProduct.description}
+            </p>
+            <Highlights />
+            <Quote />
           </div>
-          <Quote />
         </div>
 
-        {/* Different Notes will be here in the form of List */}
-        <MaterialsList materials={materials} />
+        {/* Materials list */}
+        <div className="border-t border-[var(--border-subtle)] pt-8">
+          <h2 className="text-lg font-semibold text-[var(--text-primary)] mb-6">Study Materials</h2>
+          <MaterialsList materials={materials} />
+        </div>
       </div>
-
     </div>
-  )
+  );
 }

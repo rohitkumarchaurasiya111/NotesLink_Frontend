@@ -4,38 +4,21 @@ import { useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import Loader from "../components/Loader";
 
-
 export default function AdminLayout() {
   const { user, loading } = useContext(AuthContext);
-  const navigate = useNavigate();
-  console.log("Loading:", loading);
 
-  if (loading) {
-    return <Loader />;
-  }
-
-  if (!user) {
-    return <Navigate to="/login" replace />;
-  }
-
-  // if the user is not ADMIN, then they cannot access any admin layout pages
-  if (user.role !== "ADMIN") {
-    return <Navigate to="/" replace />;
-  }
-
-  console.log(user?.role)
+  if (loading) return <Loader />;
+  if (!user) return <Navigate to="/login" replace />;
+  if (user.role !== "ADMIN") return <Navigate to="/" replace />;
 
   return (
-    <div className="flex h-screen overflow-hidden bg-gray-50">
+    <div className="flex h-screen overflow-hidden bg-[var(--bg-base)]">
       {/* Sidebar */}
       <AdminSidebar />
 
-      {/* Main Content Wrapper */}
+      {/* Main content */}
       <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
-        {/* Top bar (Optional, good for mobile menu triggers later) */}
-        {/* <Header /> can go here */}
-
-        <main className="flex-1 py-10 px-4 sm:px-6 lg:px-8">
+        <main className="flex-1 py-8 px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-7xl">
             <Outlet />
           </div>

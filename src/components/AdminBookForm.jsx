@@ -7,7 +7,7 @@ import {
   DocumentTextIcon,
   HashtagIcon,
   CloudArrowUpIcon,
-  TagIcon
+  TagIcon,
 } from "@heroicons/react/24/outline";
 import { createBook, updateBook } from "../api/adminAPI";
 
@@ -24,15 +24,14 @@ export default function AdminBookForm({
     authorName: "",
     imageURL: "",
     description: "",
-    bookCategory: "ENGINEERING", // Default fallback
+    bookCategory: "ENGINEERING",
     displayOrder: "",
     isActive: true,
   });
 
-  const [file, setFile] = useState(null);        // 📁 Book file (PDF)
+  const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  /* ================= Populate form in Edit mode ================= */
   useEffect(() => {
     if (selectedBook) {
       setBook({
@@ -50,7 +49,6 @@ export default function AdminBookForm({
     }
   }, [selectedBook]);
 
-  /* ================= Input Handler ================= */
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setBook((prev) => ({
@@ -59,12 +57,11 @@ export default function AdminBookForm({
         type === "checkbox"
           ? checked
           : name === "displayOrder"
-            ? value // Keep as string for input, convert on submit if needed
-            : value,
+          ? value
+          : value,
     }));
   };
 
-  /* ================= Reset ================= */
   const resetForm = () => {
     setBook({
       title: "",
@@ -78,27 +75,24 @@ export default function AdminBookForm({
     setFile(null);
   };
 
-  /* ================= Cancel Edit ================= */
   const handleCancelEdit = () => {
     onCancelEdit();
     resetForm();
   };
 
-  /* ================= Submit ================= */
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!isEditMode && !file) {
       setAlert({
         type: "error",
-        message: "Please upload a book file",
+        message: "Please upload a book PDF file",
       });
       return;
     }
 
     try {
       setLoading(true);
-      console.log(book);
       if (isEditMode) {
         await updateBook(selectedBook.id, book);
       } else {
@@ -114,7 +108,6 @@ export default function AdminBookForm({
 
       onSuccess();
       resetForm();
-
     } catch (err) {
       setAlert({
         type: "error",
@@ -125,57 +118,61 @@ export default function AdminBookForm({
     }
   };
 
+  const inputClass =
+    "block w-full rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-elevated)] pl-10 pr-3.5 py-2.5 text-sm text-[var(--text-primary)] placeholder-[var(--text-tertiary)] transition-colors focus:border-[var(--accent)] focus:bg-[var(--bg-surface)] focus:outline-none focus:ring-1 focus:ring-[var(--accent)] disabled:opacity-50";
+
   return (
-    <div className="relative w-full rounded-2xl bg-white shadow-sm border border-gray-200 overflow-hidden">
+    <div className="relative w-full rounded-2xl bg-[var(--bg-surface)] shadow-sm border border-[var(--border-subtle)] overflow-hidden">
+      {/* Top Accent Bar */}
+      <div className={`h-1 w-full ${isEditMode ? "bg-amber-500" : "bg-[var(--accent)]"}`} />
 
       {/* Loading Overlay */}
       {loading && (
-        <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-white/80 backdrop-blur-sm">
+        <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-[var(--bg-surface)]/85 backdrop-blur-sm">
           <Loader size="lg" />
-          <p className="mt-3 text-sm font-medium text-gray-600 animate-pulse">
-            {isEditMode ? "Updating Book Details..." : "Uploading Book & Files..."}
+          <p className="mt-3 text-sm font-medium text-[var(--text-secondary)] animate-pulse">
+            {isEditMode ? "Updating Book Details..." : "Uploading Book & PDF..."}
           </p>
         </div>
       )}
 
-      {/* ================= Header ================= */}
-      <div className="bg-gray-50/50 px-8 py-6 border-b border-gray-100 flex items-center justify-between">
+      {/* Header */}
+      <div className="bg-[var(--bg-elevated)] px-6 py-5 sm:px-8 border-b border-[var(--border-subtle)] flex items-center justify-between">
         <div>
-          <h2 className="text-xl font-bold text-gray-900">
+          <h2 className="text-lg font-bold text-[var(--text-primary)] sm:text-xl">
             {isEditMode ? "Edit Book Details" : "Add New Book"}
           </h2>
-          <p className="text-sm text-gray-500 mt-1">
+          <p className="text-xs text-[var(--text-secondary)] mt-1">
             {isEditMode
-              ? "Modify the metadata for this book."
-              : "Fill in the details below to add a new book to the library."}
+              ? "Modify the metadata and settings for this book."
+              : "Upload a new PDF book and configure its metadata."}
           </p>
         </div>
         {isEditMode && (
-          <span className="hidden sm:inline-flex items-center rounded-md bg-blue-50 px-2.5 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10">
+          <span className="inline-flex items-center rounded-full bg-amber-500/10 px-2.5 py-0.5 text-xs font-semibold text-amber-600 dark:text-amber-400 border border-amber-500/20">
             ID: #{selectedBook.id}
           </span>
         )}
       </div>
 
-      {/* ================= Form ================= */}
-      <div className="p-8">
-        <form onSubmit={handleSubmit} className="space-y-8">
-
+      {/* Form */}
+      <div className="p-6 sm:p-8">
+        <form onSubmit={handleSubmit} className="space-y-6">
           {/* Section 1: Basic Information */}
-          <div className="space-y-5">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-gray-400">
+          <div className="space-y-4">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-[var(--text-secondary)]">
               Book Information
             </h3>
 
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
               {/* Title */}
               <div className="md:col-span-2">
-                <label className="mb-1.5 block text-sm font-medium text-gray-700">
+                <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-[var(--text-secondary)]">
                   Book Title <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
-                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                    <DocumentTextIcon className="h-5 w-5 text-gray-400" />
+                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
+                    <DocumentTextIcon className="h-4 w-4 text-[var(--text-tertiary)]" />
                   </div>
                   <input
                     type="text"
@@ -185,19 +182,19 @@ export default function AdminBookForm({
                     required
                     disabled={loading}
                     placeholder="e.g. Engineering Mathematics I"
-                    className="block w-full rounded-lg border-gray-300 pl-10 focus:border-blue-500 focus:ring-blue-500 sm:text-sm py-2.5 shadow-sm border"
+                    className={inputClass}
                   />
                 </div>
               </div>
 
               {/* Author */}
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-gray-700">
+                <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-[var(--text-secondary)]">
                   Author Name
                 </label>
                 <div className="relative">
-                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                    <UserIcon className="h-5 w-5 text-gray-400" />
+                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
+                    <UserIcon className="h-4 w-4 text-[var(--text-tertiary)]" />
                   </div>
                   <input
                     type="text"
@@ -206,19 +203,19 @@ export default function AdminBookForm({
                     onChange={handleChange}
                     disabled={loading}
                     placeholder="e.g. B.S. Grewal"
-                    className="block w-full rounded-lg border-gray-300 pl-10 focus:border-blue-500 focus:ring-blue-500 sm:text-sm py-2.5 shadow-sm border"
+                    className={inputClass}
                   />
                 </div>
               </div>
 
               {/* Category */}
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-gray-700">
+                <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-[var(--text-secondary)]">
                   Category <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
-                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                    <TagIcon className="h-5 w-5 text-gray-400" />
+                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
+                    <TagIcon className="h-4 w-4 text-[var(--text-tertiary)]" />
                   </div>
                   <select
                     name="bookCategory"
@@ -226,10 +223,10 @@ export default function AdminBookForm({
                     onChange={handleChange}
                     required
                     disabled={loading}
-                    className="block w-full rounded-lg border-gray-300 pl-10 focus:border-blue-500 focus:ring-blue-500 sm:text-sm py-2.5 shadow-sm border appearance-none bg-white"
+                    className={`${inputClass} appearance-none cursor-pointer`}
                   >
                     {BookCategory.map((b) => (
-                      <option key={b} value={b}>
+                      <option key={b} value={b} className="bg-[var(--bg-surface)] text-[var(--text-primary)]">
                         {b.replace(/_/g, " ")}
                       </option>
                     ))}
@@ -239,7 +236,7 @@ export default function AdminBookForm({
 
               {/* Description */}
               <div className="md:col-span-2">
-                <label className="mb-1.5 block text-sm font-medium text-gray-700">
+                <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-[var(--text-secondary)]">
                   Description <span className="text-red-500">*</span>
                 </label>
                 <textarea
@@ -249,28 +246,28 @@ export default function AdminBookForm({
                   rows={3}
                   required
                   disabled={loading}
-                  placeholder="Brief summary of the book content..."
-                  className="block w-full rounded-lg border-gray-300 focus:border-blue-500 focus:ring-blue-500 sm:text-sm py-2.5 px-3 shadow-sm border resize-none"
+                  placeholder="Brief summary of the book content and syllabus alignment..."
+                  className="block w-full rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-elevated)] px-4 py-2.5 text-sm text-[var(--text-primary)] placeholder-[var(--text-tertiary)] transition-colors focus:border-[var(--accent)] focus:bg-[var(--bg-surface)] focus:outline-none focus:ring-1 focus:ring-[var(--accent)] resize-none"
                 />
               </div>
             </div>
           </div>
 
           {/* Section 2: Media & Files */}
-          <div className="space-y-5 border-t border-gray-100 pt-6">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-gray-400">
+          <div className="space-y-4 border-t border-[var(--border-subtle)] pt-6">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-[var(--text-secondary)]">
               Media & Files
             </h3>
 
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-              {/* Image URL */}
+            <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+              {/* Cover Image URL */}
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-gray-700">
+                <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-[var(--text-secondary)]">
                   Cover Image URL <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
-                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                    <PhotoIcon className="h-5 w-5 text-gray-400" />
+                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
+                    <PhotoIcon className="h-4 w-4 text-[var(--text-tertiary)]" />
                   </div>
                   <input
                     type="url"
@@ -280,19 +277,19 @@ export default function AdminBookForm({
                     required
                     disabled={loading}
                     placeholder="https://..."
-                    className="block w-full rounded-lg border-gray-300 pl-10 focus:border-blue-500 focus:ring-blue-500 sm:text-sm py-2.5 shadow-sm border"
+                    className={inputClass}
                   />
                 </div>
               </div>
 
               {/* Display Order */}
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-gray-700">
+                <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-[var(--text-secondary)]">
                   Display Order <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
-                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                    <HashtagIcon className="h-5 w-5 text-gray-400" />
+                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
+                    <HashtagIcon className="h-4 w-4 text-[var(--text-tertiary)]" />
                   </div>
                   <input
                     type="number"
@@ -302,7 +299,7 @@ export default function AdminBookForm({
                     required
                     disabled={loading}
                     placeholder="1"
-                    className="block w-full rounded-lg border-gray-300 pl-10 focus:border-blue-500 focus:ring-blue-500 sm:text-sm py-2.5 shadow-sm border"
+                    className={inputClass}
                   />
                 </div>
               </div>
@@ -311,18 +308,22 @@ export default function AdminBookForm({
             {/* File Upload (ADD ONLY) */}
             {!isEditMode && (
               <div className="mt-4">
-                <label className="mb-1.5 block text-sm font-medium text-gray-700">
+                <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-[var(--text-secondary)]">
                   Upload Book PDF <span className="text-red-500">*</span>
                 </label>
-                <div className={`mt-2 flex justify-center rounded-xl border border-dashed border-gray-300 px-6 py-8 transition-colors ${file ? 'bg-blue-50 border-blue-300' : 'hover:bg-gray-50'}`}>
+                <div className={`mt-1.5 flex justify-center rounded-2xl border border-dashed px-6 py-8 transition-colors ${
+                  file 
+                    ? "border-[var(--accent)] bg-[var(--accent-light)]" 
+                    : "border-[var(--border-subtle)] bg-[var(--bg-elevated)] hover:border-[var(--accent)]/50"
+                }`}>
                   <div className="text-center">
-                    <CloudArrowUpIcon className={`mx-auto h-10 w-10 ${file ? 'text-blue-500' : 'text-gray-300'}`} />
-                    <div className="mt-4 flex text-sm leading-6 text-gray-600 justify-center">
+                    <CloudArrowUpIcon className={`mx-auto h-10 w-10 ${file ? "text-[var(--accent)]" : "text-[var(--text-tertiary)]"}`} />
+                    <div className="mt-3 flex text-sm text-[var(--text-secondary)] justify-center">
                       <label
                         htmlFor="file-upload"
-                        className="relative cursor-pointer rounded-md font-semibold text-blue-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-blue-600 focus-within:ring-offset-2 hover:text-blue-500"
+                        className="relative cursor-pointer rounded-md font-semibold text-[var(--accent)] hover:underline focus-within:outline-none"
                       >
-                        <span>{file ? "Change file" : "Upload a file"}</span>
+                        <span>{file ? "Change PDF file" : "Upload a PDF file"}</span>
                         <input
                           id="file-upload"
                           name="file-upload"
@@ -334,11 +335,11 @@ export default function AdminBookForm({
                           disabled={loading}
                         />
                       </label>
-                      {!file && <p className="pl-1">or drag and drop</p>}
+                      {!file && <p className="pl-1 text-[var(--text-tertiary)]">or drag and drop</p>}
                     </div>
-                    <p className="text-xs leading-5 text-gray-500 mt-1">
+                    <p className="text-xs text-[var(--text-tertiary)] mt-1">
                       {file ? (
-                        <span className="font-semibold text-gray-900">{file.name}</span>
+                        <span className="font-semibold text-[var(--text-primary)]">{file.name}</span>
                       ) : (
                         "PDF up to 50MB"
                       )}
@@ -350,8 +351,7 @@ export default function AdminBookForm({
           </div>
 
           {/* Section 3: Status & Actions */}
-          <div className="flex flex-col gap-6 border-t border-gray-100 pt-6 sm:flex-row sm:items-center sm:justify-between">
-
+          <div className="flex flex-col gap-5 border-t border-[var(--border-subtle)] pt-6 sm:flex-row sm:items-center sm:justify-between">
             {/* Active Toggle Switch */}
             <label className="relative inline-flex cursor-pointer items-center">
               <input
@@ -362,9 +362,9 @@ export default function AdminBookForm({
                 disabled={loading}
                 className="peer sr-only"
               />
-              <div className="h-6 w-11 rounded-full bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-              <span className="ml-3 text-sm font-medium text-gray-700">
-                {book.isActive ? "Book is Visible" : "Book is Hidden"}
+              <div className="h-6 w-11 rounded-full bg-[var(--bg-muted)] peer-focus:outline-none border border-[var(--border-subtle)] peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[var(--accent)]"></div>
+              <span className="ml-3 text-xs font-semibold text-[var(--text-primary)]">
+                {book.isActive ? "Visible in Library" : "Hidden from Students"}
               </span>
             </label>
 
@@ -375,7 +375,7 @@ export default function AdminBookForm({
                   type="button"
                   onClick={handleCancelEdit}
                   disabled={loading}
-                  className="flex-1 sm:flex-none rounded-lg border border-gray-300 bg-white px-5 py-2.5 text-sm font-semibold text-gray-700 shadow-sm hover:bg-gray-50 disabled:opacity-50 transition-colors"
+                  className="flex-1 sm:flex-none rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-elevated)] px-5 py-2.5 text-sm font-semibold text-[var(--text-primary)] shadow-sm hover:bg-[var(--bg-muted)] disabled:opacity-50 transition-colors"
                 >
                   Cancel
                 </button>
@@ -383,7 +383,11 @@ export default function AdminBookForm({
               <button
                 type="submit"
                 disabled={loading}
-                className="flex-1 sm:flex-none rounded-lg bg-gray-900 px-6 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className={`flex-1 sm:flex-none rounded-xl px-6 py-2.5 text-sm font-semibold text-white shadow-sm transition-all active:scale-[0.98] ${
+                  isEditMode
+                    ? "bg-amber-600 hover:bg-amber-700"
+                    : "bg-[var(--accent)] hover:bg-[var(--accent-hover)]"
+                } disabled:opacity-50 disabled:cursor-not-allowed`}
               >
                 {loading
                   ? (isEditMode ? "Saving..." : "Uploading...")
@@ -392,7 +396,6 @@ export default function AdminBookForm({
               </button>
             </div>
           </div>
-
         </form>
       </div>
     </div>

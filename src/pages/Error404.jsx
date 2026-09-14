@@ -1,10 +1,13 @@
 import React from "react";
 import { useRouteError, isRouteErrorResponse, Link, useNavigate } from "react-router-dom";
 import NotesLinkFullLogo from "../assets/NotesLinkFullLogo.png";
+import NotesLinkFullLogoDark from "../assets/NotesLinkFullLogo_Dark.png";
+import { useTheme } from "../contexts/ThemeContext";
 
 export default function ErrorPage() {
   const error = useRouteError();
   const navigate = useNavigate();
+  const { isDark } = useTheme();
 
   let statusCode = 404;
   let title = "Page Not Found";
@@ -32,12 +35,12 @@ export default function ErrorPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] flex flex-col justify-center items-center px-6 py-12 text-slate-800 font-sans">
+    <div className="min-h-screen bg-[var(--bg-base)] flex flex-col justify-center items-center px-6 py-12 text-[var(--text-primary)] font-sans">
       <div className="max-w-md w-full text-center">
         {/* Logo */}
         <div className="flex justify-center mb-6">
           <img
-            src={NotesLinkFullLogo}
+            src={isDark ? NotesLinkFullLogoDark : NotesLinkFullLogo}
             alt="NotesLink Logo"
             className="h-10 w-auto object-contain"
           />
@@ -45,21 +48,21 @@ export default function ErrorPage() {
 
         {/* Status Code */}
         <div className="relative inline-block mb-4">
-          <span className="text-8xl sm:text-9xl font-extrabold text-[#e0e7ff] tracking-tight select-none">
+          <span className="text-8xl sm:text-9xl font-extrabold text-[var(--border-subtle)] tracking-tight select-none">
             {statusCode}
           </span>
           <div className="absolute inset-0 flex items-center justify-center">
-            <span className="text-4xl sm:text-5xl font-black bg-gradient-to-r from-[#4f46e5] to-[#6366f1] bg-clip-text text-transparent">
+            <span className="text-4xl sm:text-5xl font-black text-[var(--accent)]">
               {statusCode}
             </span>
           </div>
         </div>
 
         {/* Details */}
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mb-2">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-[var(--text-primary)] tracking-tight mb-2">
           {title}
         </h1>
-        <p className="text-sm text-slate-600 leading-relaxed mb-8">
+        <p className="text-sm text-[var(--text-secondary)] leading-relaxed mb-8">
           {description}
         </p>
 
@@ -67,23 +70,23 @@ export default function ErrorPage() {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
           <button
             onClick={() => navigate(-1)}
-            className="w-full sm:w-auto px-5 py-2.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 text-sm font-semibold rounded-xl shadow-sm transition-all cursor-pointer"
+            className="w-full sm:w-auto px-5 py-2.5 bg-[var(--bg-surface)] border border-[var(--border-subtle)] hover:bg-[var(--bg-elevated)] text-[var(--text-primary)] text-sm font-semibold rounded-xl shadow-sm transition-all cursor-pointer"
           >
             ← Go Back
           </button>
           
           <Link
             to="/"
-            className="w-full sm:w-auto px-6 py-2.5 bg-[#4f46e5] hover:bg-[#4338ca] text-white text-sm font-semibold rounded-xl shadow-sm transition-all"
+            className="w-full sm:w-auto px-6 py-2.5 bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-white text-sm font-semibold rounded-xl shadow-sm transition-all"
           >
             Back to Home
           </Link>
         </div>
 
         {/* Support Link */}
-        <p className="text-xs text-slate-400 mt-10">
+        <p className="text-xs text-[var(--text-tertiary)] mt-10">
           Need help?{" "}
-          <Link to="/contactus" className="text-[#4f46e5] font-medium hover:underline">
+          <Link to="/contactus" className="text-[var(--accent)] font-medium hover:underline">
             Contact Support Desk
           </Link>
         </p>

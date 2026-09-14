@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect } from "react";
-import { loginOrRegister } from "../api/authAPI";
+import { loginOrRegister, logoutAPI } from "../api/authAPI";
 import { getUserDetails } from "../api/authAPI";
 
 // Global authentication context in React.
@@ -43,11 +43,15 @@ export function AuthProvider({ children }) {
     const { token, name, email, role, collegeId, collegeLogo } = apiResponse.data;
 
     const userData = { name, email, role, collegeId, collegeLogo };
+    localStorage.setItem("noteslink_user", JSON.stringify(userData));
+
     setUser(userData);
   };
 
   //Logout Function
-  const logout = () => {
+  const logout = async () => {
+    //Returns empty token
+    const apiResponse = await logoutAPI();
     localStorage.removeItem("noteslink_token");
     localStorage.removeItem("noteslink_user");
     setUser(null);

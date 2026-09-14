@@ -19,6 +19,7 @@ import AboutUs from "../pages/AboutUs";
 import LoginPage from "../pages/LoginPage";
 import ErrorSection7 from "../pages/Error404";
 import Explore from "../pages/Explore";
+import { requireAdmin, requireAuth } from "./authGuard";
 // import { requireAdmin, requireAuth, requirePremium } from "./authGuard";
 
 export const router = createBrowserRouter([
@@ -52,24 +53,29 @@ export const router = createBrowserRouter([
 
             // Protected Routes
             {
-                path: "subjects",
-                element: <ProductListing />,
-                loader: productListingLoader,
-            },
-            {
-                path: "subject/:id/:name",
-                element: <ProductDetails />,
-                loader: productDetailsLoader,
-            },
-            {
-                path: "books",
-                element: <BookListing />,
-                loader: bookListingLoader,
-            },
-            {
-                path: "projects",
-                element: <ProjectListing />,
-                loader: projectListingLoader,
+                loader: requireAuth,        // Intercepts BEFORE any child loader runs!
+                children: [
+                    {
+                        path: "subjects",
+                        element: <ProductListing />,
+                        loader: productListingLoader,
+                    },
+                    {
+                        path: "subject/:id/:name",
+                        element: <ProductDetails />,
+                        loader: productDetailsLoader,
+                    },
+                    {
+                        path: "books",
+                        element: <BookListing />,
+                        loader: bookListingLoader,
+                    },
+                    {
+                        path: "projects",
+                        element: <ProjectListing />,
+                        loader: projectListingLoader,
+                    }
+                ]
             },
             // Catch-all 404 Route for unregistered user URLs
             {
@@ -83,7 +89,7 @@ export const router = createBrowserRouter([
     {
         path: "/admin",
         element: <AdminLayout />,
-        // loader: requireAdmin,           //To access the below pages, you need to go through this authGuard
+        loader: requireAdmin,           //To access the below pages, you need to go through this authGuard
         children: [
             {
                 index: true,

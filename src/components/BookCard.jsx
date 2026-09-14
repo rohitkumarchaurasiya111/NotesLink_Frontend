@@ -1,68 +1,52 @@
 export default function BookCard({ book }) {
-  const {
-    title,
-    authorName,
-    description,
-    imageURL,
-    driveLink,
-    bookCategory,
-  } = book;
-
-  const handleOpenBook = () => {
-    window.open(driveLink, "_blank", "noopener,noreferrer");
-  };
+  const { title, authorName, description, imageURL, driveLink, bookCategory } = book;
 
   return (
     <div
-      onClick={handleOpenBook}
-      className="group cursor-pointer overflow-hidden rounded-xl border border-gray-100 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl active:scale-[0.98] h-full flex flex-col"
+      onClick={() => window.open(driveLink, "_blank", "noopener,noreferrer")}
+      className="group cursor-pointer flex flex-col h-full rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] overflow-hidden hover:border-[var(--border-default)] hover:shadow-[var(--shadow-md)] transition-all duration-200"
     >
-      {/* Image Container */}
-      <div className="relative h-48 sm:h-56 w-full overflow-hidden bg-gray-100">
+      {/* Cover image */}
+      <div className="relative h-48 bg-[var(--bg-elevated)] overflow-hidden flex-shrink-0">
         <img
           src={imageURL || "https://res.cloudinary.com/dfdusmc9k/image/upload/Book_Cover_Image_c97hus.png"}
           alt={title}
           loading="lazy"
-          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/5 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
       </div>
 
-      {/* Content Section */}
-      <div className="p-5 space-y-3 flex-grow flex flex-col">
-        {/* Category & Meta */}
-        <div className="flex items-start justify-between">
-          <span className="inline-block rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-bold text-blue-600 uppercase tracking-wide">
+      {/* Content */}
+      <div className="p-4 flex flex-col flex-1">
+        {/* Category */}
+        {bookCategory && (
+          <span className="inline-block mb-2 text-[10px] font-semibold uppercase tracking-wider text-[var(--accent)] bg-[var(--accent-light)] px-2 py-0.5 rounded-md w-fit">
             {bookCategory.replace("_", " ")}
           </span>
-        </div>
+        )}
 
-        {/* Title */}
-        <h3 className="line-clamp-2 text-lg font-bold text-gray-900 leading-snug group-hover:text-blue-600 transition-colors">
+        <h3 className="text-sm font-semibold text-[var(--text-primary)] line-clamp-2 leading-snug mb-1 group-hover:text-[var(--accent)] transition-colors duration-150">
           {title}
         </h3>
 
-        {/* Author */}
         {authorName && (
-          <p className="text-sm text-gray-500 font-medium">
-            by <span className="text-gray-700">{authorName}</span>
+          <p className="text-xs text-[var(--text-secondary)] mb-2">
+            by {authorName}
           </p>
         )}
 
-        {/* Description */}
-        <p className="line-clamp-3 text-sm text-gray-500 leading-relaxed">
-          {description}
-        </p>
-      </div>
+        {description && (
+          <p className="text-xs text-[var(--text-secondary)] line-clamp-2 leading-relaxed flex-1">
+            {description}
+          </p>
+        )}
 
-      {/* Footer CTA */}
-      {/* This will always be at the bottom because of flex-grow above */}
-      <div className="px-5 pb-5 pt-0 mt-auto">
-        <div className="border-t border-gray-100 pt-4 flex items-center justify-between text-sm font-semibold text-blue-600">
-          <span>Read Now</span>
-          <span className="transform transition-transform duration-300 group-hover:translate-x-1">
-            →
-          </span>
+        {/* CTA */}
+        <div className="pt-3 mt-3 border-t border-[var(--border-subtle)] flex items-center justify-between">
+          <span className="text-xs font-semibold text-[var(--accent)]">Read now</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5 text-[var(--accent)] transition-transform duration-150 group-hover:translate-x-0.5">
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
         </div>
       </div>
     </div>

@@ -1,15 +1,19 @@
-import { useState, useEffect } from "react";
-import ProductOverview from "../components/ProductOverview"
-import { useLoaderData, useParams } from "react-router-dom";
+import ProductOverview from "../components/ProductOverview";
+import { useLoaderData, useParams, useNavigation } from "react-router-dom";
+import SubjectDetailsSkeleton from "../components/SubjectDetailsSkeleton";
 
+export default function ProductDetails() {
+  const { id } = useParams();
+  const loaderData = useLoaderData();
+  const navigation = useNavigation();
 
-export default function ProductDetails(){
-    const {id} = useParams();           //Getting this Id from React Router
-    const {specificProduct, materials} = useLoaderData();       //Getting these data from react-router loader 
+  if (navigation.state === "loading" || !loaderData?.specificProduct) {
+    return <SubjectDetailsSkeleton />;
+  }
 
-    return(
-        <>
-            <ProductOverview specificProduct={specificProduct} materials={materials}/>
-        </>
-    );
+  const { specificProduct, materials } = loaderData;
+
+  return (
+    <ProductOverview specificProduct={specificProduct} materials={materials} />
+  );
 }

@@ -32,3 +32,9 @@ export async function getAllProjectDetails() {
     const response = await api.get(`${USER_BASE}/projects`)
     return response;
 }
+
+export async function subscribeToNewsLetter(email) {
+    const payload = typeof email === "string" ? { email } : email;
+    const response = await api.post("/api/newsletter/subscribe", payload);
+    return response;
+}

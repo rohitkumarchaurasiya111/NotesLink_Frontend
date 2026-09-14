@@ -37,7 +37,7 @@ function ErrorIcon({ className }) {
 function CloseIcon() {
   return (
     <svg
-      className="h-5 w-5"
+      className="h-4 w-4"
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 20 20"
       fill="currentColor"
@@ -67,26 +67,25 @@ export default function AlertMessage({ type = "error", message, onClose }) {
     return () => clearTimeout(timer);
   }, [type, onClose]);
 
-
   const styles = isSuccess
     ? {
-      container: "bg-green-50 border-green-500 text-green-800",
-      icon: "text-green-500",
-      closeBtn: "hover:bg-green-100 text-green-600",
-    }
+        container: "bg-emerald-50 dark:bg-emerald-950/40 border-emerald-500 text-emerald-900 dark:text-emerald-200 border-l-4",
+        icon: "text-emerald-600 dark:text-emerald-400",
+        closeBtn: "hover:bg-emerald-100 dark:hover:bg-emerald-900/50 text-emerald-700 dark:text-emerald-300",
+      }
     : {
-      container: "bg-red-50 border-red-500 text-red-800",
-      icon: "text-red-500",
-      closeBtn: "hover:bg-red-100 text-red-600",
-    };
+        container: "bg-rose-50 dark:bg-rose-950/40 border-rose-500 text-rose-900 dark:text-rose-200 border-l-4",
+        icon: "text-rose-600 dark:text-rose-400",
+        closeBtn: "hover:bg-rose-100 dark:hover:bg-rose-900/50 text-rose-700 dark:text-rose-300",
+      };
 
   return (
     <div
       role="alert"
-      className={`relative mb-4 flex w-full items-start rounded-r-lg border-l-4 p-4 shadow-sm transition-all duration-300 animate-in fade-in slide-in-from-top-2 ${styles.container}`}
+      className={`relative mb-4 flex w-full items-start rounded-r-xl p-4 shadow-sm transition-all duration-300 animate-in fade-in slide-in-from-top-2 ${styles.container}`}
     >
       {/* Icon */}
-      <div className="flex-shrink-0">
+      <div className="flex-shrink-0 mt-0.5">
         {isSuccess ? (
           <SuccessIcon className={`h-5 w-5 ${styles.icon}`} />
         ) : (
@@ -96,7 +95,7 @@ export default function AlertMessage({ type = "error", message, onClose }) {
 
       {/* Message */}
       <div className="ml-3 flex-1">
-        <p className="text-sm font-medium">{message}</p>
+        <p className="text-sm font-medium leading-relaxed">{message}</p>
       </div>
 
       {/* Close button */}
@@ -104,7 +103,7 @@ export default function AlertMessage({ type = "error", message, onClose }) {
         <button
           onClick={onClose}
           type="button"
-          className={`inline-flex rounded-md p-1.5 focus:outline-none focus:ring-2 focus:ring-offset-2 ${styles.closeBtn}`}
+          className={`inline-flex rounded-lg p-1.5 focus:outline-none focus:ring-2 focus:ring-offset-1 transition-colors ${styles.closeBtn}`}
         >
           <span className="sr-only">Dismiss alert</span>
           <CloseIcon />

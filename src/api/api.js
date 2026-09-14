@@ -20,14 +20,13 @@ export const api = axios.create({
 api.interceptors.response.use(
     (response) => response,
     (error) => {
-        if (error.response?.status === 401) {
-            //Remove Cookies 
+        if (error.response?.status === 401) {                                         //If not logged In, Redirects to Login
             window.location.href = "/login";
         }
-        // if (error.response?.status === 403) {
+        // if (error.response?.status === 403) {                                       //If Access is Forbidden, Redirects to Home
         //     window.location.href = "/";
         // }
-        return Promise.reject(error);
+        return Promise.reject(error);                                                  //Promise rejected
     }
 );
 
